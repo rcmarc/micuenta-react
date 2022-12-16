@@ -7,8 +7,8 @@ assignees: ''
 
 ---
 
-**Describa su idea**
+### Descripción
 Una descripción clara y concisa de la idea.
 
-**Describa la solución que quisiera**
+### Solución
 Una descripción clara y concisa de lo que usted quiere que suceda.
