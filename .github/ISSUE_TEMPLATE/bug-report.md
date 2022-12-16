@@ -7,23 +7,23 @@ assignees: ''
 
 ---
 
-**Describa el error**
+### Descripción
 Una descripción clara y concisa de el problema en cuestión.
 
-**Pasos para reproducir el error**
+### Pasos para reproducir el error
 1. Ir a '...'
 2. Click en '....'
 4. Error
 
-**Comportamiento esperado**
-Descripci'on clara y concisa de lo que usted esperaba que ocurriera.
+### Comportamiento esperado
+Descripción clara y concisa de lo que usted esperaba que ocurriera.
 
-**Capturas de pantalla**
+### Capturas de pantalla
 Si puede, añada capturas de pantalla para ayudar a explicar su problema.
 
-**Añada la siguiente información**
+### Añada la siguiente información
 - Sistema Operativo: [ej. Linux 5.15.2]
 - Navegador: [ej. Chrome v108]
 
-**Contexto adicional**
+### Contexto adicional
 Si hace falta añada información extra acerca del problema.
