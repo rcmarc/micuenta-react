@@ -21,7 +21,7 @@ Descripci'on clara y concisa de lo que usted esperaba que ocurriera.
 **Capturas de pantalla**
 Si puede, añada capturas de pantalla para ayudar a explicar su problema.
 
-**Añada la siguiente versión**
+**Añada la siguiente información**
 - Sistema Operativo: [ej. Linux 5.15.2]
 - Navegador: [ej. Chrome v108]
 
