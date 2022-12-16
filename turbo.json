@@ -1,0 +1,31 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "pipeline": {
+    "build": {
+      "dependsOn": [
+        "^build"
+      ],
+      "outputs": [
+        "dist/**",
+        ".next/**"
+      ]
+    },
+    "lint": {
+      "outputs": []
+    },
+    "dev": {
+      "cache": false
+    }
+  },
+  "globalEnv": [
+    "LDAP_HOST",
+    "LDAP_BIND_DN",
+    "LDAP_BIND_PASSWORD",
+    "LDAP_SEARCH_BASE",
+    "LDAP_SEARCH_FILTER",
+    "LDAP_REJECT_UNAUTHORIZED",
+    "LDAP_KEY_PATH",
+    "LDAP_CERT_PATH",
+    "SECRET_KEY"
+  ]
+}

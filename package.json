@@ -1,0 +1,32 @@
+{
+  "name": "ucfgos",
+  "private": true,
+  "author": {
+    "name": "Universidad de Cienfuegos"
+  },
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev --parallel",
+    "lint": "turbo run lint",
+    "lint-staged": "lint-staged",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "prepare": "husky install"
+  },
+  "devDependencies": {
+    "eslint": "^8.29.0",
+    "husky": "^8.0.2",
+    "lint-staged": "^13.1.0",
+    "turbo": "^1.6.3"
+  },
+  "lint-staged": {
+    "*.js": "eslint"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "packageManager": "npm@8.19.2"
+}

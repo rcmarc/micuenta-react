@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    environment:
+      - LDAP_HOST=${LDAP_HOST}
+      - LDAP_BIND_DN=${LDAP_BIND_DN}
+      - LDAP_BIND_PASSWORD=${LDAP_BIND_PASSWORD}
+      - LDAP_SEARCH_BASE=${LDAP_SEARCH_BASE}
+      - LDAP_CERT_PATH=${LDAP_CERT_PATH}
+      - LDAP_KEY_PATH=${LDAP_KEY_PATH}
+      - LDAP_REJECT_UNAUTHORIZED=${LDAP_REJECT_UNAUTHORIZED}
+      - SECRET_KEY=${SECRET_KEY}
+      - PORT=${PORT:-3000}
+      - NODE_ENV=${NODE_ENV:-production}
+
+volumes:
+  data:

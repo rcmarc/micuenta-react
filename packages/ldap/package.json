@@ -1,0 +1,19 @@
+{
+  "name": "@ucfgos/ldap",
+  "version": "1.0.0",
+  "description": "Ldap library to connect with UCF Active Directory",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "ldapjs": "^2.3.3"
+  },
+  "devDependencies": {
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-config-turbo": "^0.0.7",
+    "eslint-plugin-prettier": "^4.2.1"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  // tailwind specific config
+  "files.associations": {
+    "*.css": "tailwindcss"
+  },
+  "editor.quickSuggestions": {
+    "strings": true
+  },
+
+  // Formatting using Prettier for JavaScript, overrides VSCode default.
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+
+  "files.exclude": {
+    "**/node_modules": false,
+    "node_modules": true,
+    "*[!test]**/node_modules": true
+  }
+}
