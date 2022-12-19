@@ -1,20 +1,20 @@
 import { createClient } from 'ldapjs';
 import options from './options';
 
-const ATTRIBUTES = Object.keys(options.attributesMap);
-
 const userAttr = (ldapAttr) => {
   const attr = {};
   attr[options.attributesMap[ldapAttr.type]] = ldapAttr.val;
   return attr;
 };
 
-const toUser = (entry) =>
-  entry.attributes
+const toUser = (entry) => {
+  const ATTRIBUTES = Object.keys(options.attributesMap);
+  return entry.attributes
     .filter((attr) => ATTRIBUTES.includes(attr.type))
     .map((attr) => ({ val: attr.vals[0], type: attr.type }))
     .map((attr) => userAttr(attr))
     .reduce((prev, current) => Object.assign(prev, current));
+};
 
 const connect = () => {
   return createClient({
@@ -45,8 +45,8 @@ class Ldap {
     this.client = connect();
   }
 
-  fetchEntry(sAMAccountName, fetchAttributes = true) {
-    const attributes = fetchAttributes ? ATTRIBUTES : ['mail'];
+  fetchEntry(sAMAccountName, fetchAttributes) {
+    const attributes = fetchAttributes || ['mail', 'displayName'];
     return new Promise((resolve, reject) => {
       let entry;
       // eslint-disable-next-line no-unused-vars
