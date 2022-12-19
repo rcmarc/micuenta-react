@@ -11,6 +11,10 @@ body {
 @tailwind utilities;
 
 @layer components {
+  html,
+  body {
+    @apply bg-slate-50
+  }
   .micuenta-gradient {
     @apply bg-gradient-to-r from-accent-300 to-primary-700;
   }
