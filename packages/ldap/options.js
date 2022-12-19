@@ -5,6 +5,7 @@ const LDAP_CERT_PATH = process.env.LDAP_CERT_PATH;
 const ATTRIBUTES_MAP = {
   sAMAccountName: 'username',
   mail: 'email',
+  displayName: 'name',
 };
 
 const options = {
