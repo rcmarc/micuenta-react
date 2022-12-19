@@ -5,8 +5,10 @@ function MainLayout({ children }) {
   return (
     <>
       <TopBar />
-      <SideNav />
-      {children}
+      <div className="mt-5 flex">
+        <SideNav className={'w-2/12'} />
+        {children}
+      </div>
     </>
   );
 }
