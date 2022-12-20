@@ -5,15 +5,16 @@ export function useRouterEvents(events) {
   const router = useRouter();
 
   useEffect(() => {
-    for (const [event, cb] of Object.entries(events)) {
+    const entries = Object.entries(events);
+    for (const [event, cb] of entries) {
       if (cb) {
         router.events.on(event, cb);
       }
     }
 
     return () => {
-      for (const eventName of Object.keys(events)) {
-        router.events.off(eventName);
+      for (const [event, cb] of entries) {
+        router.events.off(event, cb);
       }
     };
   }, [router.events, events]);
