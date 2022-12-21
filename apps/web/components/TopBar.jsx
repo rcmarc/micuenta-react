@@ -11,9 +11,7 @@ function TopBar() {
         </div>
         <div className="xs:flex hidden py-4">
           <div className="pt-1">
-            <p className="text-foreground-light px-2 text-lg italic">
-              MiCuenta
-            </p>
+            <p className="px-2 text-lg italic text-slate-500">MiCuenta</p>
           </div>
           <div>
             <LogoText size={'2xl'} />
