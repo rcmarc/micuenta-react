@@ -14,8 +14,8 @@ function Avatar() {
 
   if (initials) {
     return (
-      <div className="bg-accent-200 h-min rounded-full py-3 px-2 font-semibold tracking-widest">
-        <p className="text-xl">{initials}</p>
+      <div className="h-min rounded-full bg-teal-500 py-3 px-2 font-semibold tracking-widest">
+        <p className="text-xl text-white">{initials}</p>
       </div>
     );
   }
