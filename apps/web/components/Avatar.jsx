@@ -1,7 +1,7 @@
 import { MdAccountCircle } from 'react-icons/md';
 import { useSession } from 'next-auth/react';
 
-function Avatar() {
+function Avatar({ className }) {
   const session = useSession();
   let initials;
 
@@ -14,7 +14,9 @@ function Avatar() {
 
   if (initials) {
     return (
-      <div className="h-min rounded-full bg-teal-500 py-3 px-2 font-semibold tracking-widest">
+      <div
+        className={`h-min rounded-full bg-teal-500 py-3 px-2 font-semibold tracking-widest ${className}`}
+      >
         <p className="text-xl text-white">{initials}</p>
       </div>
     );
