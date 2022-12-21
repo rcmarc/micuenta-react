@@ -7,8 +7,8 @@ function MainLayout({ children }) {
     <>
       <ProgressBar />
       <TopBar />
-      <div className="mt-5 flex">
-        <SideNav className={'w-2/12'} />
+      <div className="flex flex-col md:mt-5 md:flex-row">
+        <SideNav className={'md:w-4/12 md:flex-col lg:w-3/12 xl:w-2/12'} />
         {children}
       </div>
     </>
