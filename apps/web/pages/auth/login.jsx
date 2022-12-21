@@ -68,7 +68,9 @@ export default function LoginPage({ csrfToken }) {
         </InputGroup>
         <div className="flex justify-between">
           <QueryErrorMessage className="pt-2" />
-          <Button type="submit">Iniciar Sesión</Button>
+          <Button className={'p-2'} type="submit">
+            Iniciar Sesión
+          </Button>
         </div>
       </Form>
     </>
