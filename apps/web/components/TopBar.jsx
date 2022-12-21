@@ -1,8 +1,12 @@
+import { useState } from 'react';
+
 import Avatar from './Avatar';
 import Logo from './Logo';
 import LogoText from './LogoText';
+import LogoutPopover from './LogoutPopover';
 
 function TopBar() {
+  const [showPopover, setShowPopover] = useState(false);
   return (
     <div className="xs:px-10 flex justify-between bg-slate-200 px-3 py-1">
       <div className="flex">
@@ -18,8 +22,18 @@ function TopBar() {
           </div>
         </div>
       </div>
-      <div className="mt-2">
-        <Avatar />
+      <div className="relative mt-2">
+        <div
+          className="rounded-full"
+          onClick={() => setShowPopover((show) => !show)}
+        >
+          <Avatar className="cursor-pointer border-2 border-transparent hover:border-sky-700 hover:shadow-md hover:shadow-sky-300" />
+        </div>
+        {showPopover && (
+          <div className="absolute top-[.5em] right-[1.5em] mt-5">
+            <LogoutPopover />
+          </div>
+        )}
       </div>
     </div>
   );
