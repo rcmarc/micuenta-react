@@ -40,7 +40,7 @@ const SideNavLi = ({ key, selected, children }) => (
     key={key}
     className={`${
       selected
-        ? 'border-primary-500 md:bg-primary-100 rounded-[10%] border-b-2 md:border-none'
+        ? 'rounded-[10%] border-b-2 border-sky-500 md:border-none md:bg-cyan-200'
         : 'md:hover:bg-slate-200'
     }  mx-5 sm:mx-auto md:mx-0 md:rounded-r-full`}
   >
@@ -58,9 +58,7 @@ const SideNavLink = ({ link }) => (
       })}
       <p
         className={`whitespace-nowrap font-medium tracking-wide ${
-          link.selected
-            ? 'text-primary-600 md:text-slate-600'
-            : 'text-slate-600'
+          link.selected ? 'text-sky-500 md:text-slate-600' : 'text-slate-600'
         }`}
       >
         {link.text}
