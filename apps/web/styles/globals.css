@@ -13,12 +13,22 @@ body {
 @layer components {
   html,
   body {
-    @apply bg-slate-50
+    @apply bg-slate-50;
   }
   .micuenta-gradient {
-    @apply bg-gradient-to-r from-accent-300 to-primary-700;
+    @apply from-accent-300 to-primary-700 bg-gradient-to-r;
   }
   .micuenta-gradient-l {
-    @apply bg-gradient-to-l from-accent-400 to-primary-800;
+    @apply from-accent-400 to-primary-800 bg-gradient-to-l;
+  }
+
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  .scrollbar-hidden::-webkit-scrollbar {
+    display: none;
+  }
+  /* Hide scrollbar for IE, Edge and Firefox */
+  .scrollbar-hidden {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
   }
 }
