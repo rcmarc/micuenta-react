@@ -58,7 +58,7 @@ function ProgressBar() {
   return (
     <span
       ref={barRef}
-      className="bg-accent-400 absolute top-0 left-0 h-1 rounded-r-full transition-[width_opacity]"
+      className="absolute top-0 left-0 h-1 rounded-r-full bg-cyan-500 transition-[width_opacity]"
     />
   );
 }
