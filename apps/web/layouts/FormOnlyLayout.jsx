@@ -5,7 +5,7 @@ import LogoText from '../components/LogoText';
 
 const FormContainer = ({ children }) => {
   return (
-    <div className="shadow-stale-700 bg-background xs:h-full xs:w-9/12 xs:rounded-lg relative h-screen w-full overflow-hidden py-10 px-10 shadow-2xl sm:w-7/12 sm:px-14 md:w-5/12 md:px-10 lg:w-4/12 xl:w-3/12">
+    <div className="shadow-stale-700 bg-background xs:h-full xs:w-9/12 xs:rounded-lg relative h-screen w-full overflow-hidden py-10 px-[5%] shadow-2xl sm:w-7/12 sm:px-14 md:w-5/12 md:px-10 lg:w-4/12 xl:w-3/12">
       {children}
     </div>
   );
