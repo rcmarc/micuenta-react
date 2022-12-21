@@ -53,7 +53,7 @@ const SideNavLink = ({ link }) => (
     <div className="flex py-3 px-0 sm:px-3 md:px-8">
       {React.createElement(link.icon, {
         className: `text-2xl ${
-          link.selected ? 'text-primary-700' : 'text-foreground-light'
+          link.selected ? 'text-sky-500' : 'text-slate-500'
         } mr-3 hidden sm:block`,
       })}
       <p
