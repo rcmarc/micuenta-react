@@ -8,32 +8,29 @@ import LogoutPopover from './LogoutPopover';
 function TopBar() {
   const [showPopover, setShowPopover] = useState(false);
   const [clicked, setClicked] = useState(false);
-  const [blurred, setBlurred] = useState(false);
-  const popoverRef = useRef(null);
+  const avatarRef = useRef(null);
 
   const onBlur = () => {
     if (!clicked) {
       setShowPopover(false);
-    } else {
-      setBlurred(true);
     }
-  };
-
-  const onClick = () => {
-    setShowPopover(!blurred);
-    setBlurred(false);
     setClicked(false);
   };
 
+  const onClick = () => {
+    setShowPopover((show) => !show);
+  };
+
   const onMouseDown = () => {
+    avatarRef.current.focus();
     setClicked(true);
   };
 
   useEffect(() => {
-    if (showPopover && popoverRef.current) {
-      popoverRef.current.focus();
+    if (showPopover && avatarRef.current) {
+      avatarRef.current.focus();
     }
-  }, [showPopover]);
+  }, [showPopover, clicked]);
 
   return (
     <div className="xs:px-10 flex justify-between bg-slate-200 px-3 py-1">
@@ -53,8 +50,10 @@ function TopBar() {
       <div className="relative mt-2">
         <div
           className="rounded-full"
-          onMouseDown={onMouseDown}
           onClick={onClick}
+          onBlur={onBlur}
+          ref={avatarRef}
+          tabIndex={-1}
         >
           <Avatar
             className={`${
@@ -64,10 +63,8 @@ function TopBar() {
         </div>
         {showPopover && (
           <div
-            ref={popoverRef}
-            tabIndex={-1}
+            onMouseDown={onMouseDown}
             className="absolute top-[5em] right-[1.5em] outline-none"
-            onBlur={onBlur}
           >
             <LogoutPopover />
           </div>
