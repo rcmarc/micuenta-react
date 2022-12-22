@@ -13,7 +13,7 @@ function LogoutPopover() {
 
   return (
     <>
-      <div className="mt-12 flex flex-col items-center rounded-lg border-[1px] border-slate-200 p-4 shadow-md">
+      <div className="flex flex-col items-center rounded-lg border-[1px] border-slate-200 p-4 shadow-md">
         {user ? (
           <>
             <Avatar />
