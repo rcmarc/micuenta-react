@@ -29,12 +29,12 @@ const rootBind = (client, cb) => {
   client.bind(options.bindDN, options.bindCredentials, cb);
 };
 
-const searchAccount = ({ client, sAMAccountName, attributes }, cb) => {
+const searchAccount = ({ client, filter, attributes }, cb) => {
   client.search(
     options.searchBase,
     {
-      filter: `sAMAccountName=${sAMAccountName}`,
       scope: 'sub',
+      filter,
       attributes,
     },
     cb
@@ -46,7 +46,7 @@ class Ldap {
     this.client = connect();
   }
 
-  fetchEntry(sAMAccountName, fetchAttributes) {
+  fetchEntry(filter, fetchAttributes) {
     const attributes = fetchAttributes || ATTRIBUTES;
     return new Promise((resolve, reject) => {
       let entry;
@@ -57,7 +57,7 @@ class Ldap {
         }
 
         searchAccount(
-          { client: this.client, sAMAccountName, attributes },
+          { client: this.client, filter, attributes },
           (err, res) => {
             if (err) {
               reject(err);
@@ -85,12 +85,8 @@ class Ldap {
     });
   }
 
-  async authenticate(sAMAccountName, password) {
-    const entry = await this.fetchEntry(sAMAccountName, [
-      'mail',
-      'givenName',
-      'sn',
-    ]);
+  async authenticate(filter, password) {
+    const entry = await this.fetchEntry(filter, ['mail', 'givenName', 'sn']);
 
     if (!entry) {
       return null;
