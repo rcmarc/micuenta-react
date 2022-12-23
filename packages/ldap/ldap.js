@@ -1,6 +1,8 @@
 import { createClient } from 'ldapjs';
 import options from './options';
 
+const ATTRIBUTES = Object.keys(options.attributesMap);
+
 const userAttr = (ldapAttr) => {
   const attr = {};
   attr[options.attributesMap[ldapAttr.type]] = ldapAttr.val;
@@ -8,7 +10,6 @@ const userAttr = (ldapAttr) => {
 };
 
 const toUser = (entry) => {
-  const ATTRIBUTES = Object.keys(options.attributesMap);
   return entry.attributes
     .filter((attr) => ATTRIBUTES.includes(attr.type))
     .map((attr) => ({ val: attr.vals[0], type: attr.type }))
@@ -46,7 +47,7 @@ class Ldap {
   }
 
   fetchEntry(sAMAccountName, fetchAttributes) {
-    const attributes = fetchAttributes || ['mail', 'displayName'];
+    const attributes = fetchAttributes || ATTRIBUTES;
     return new Promise((resolve, reject) => {
       let entry;
       // eslint-disable-next-line no-unused-vars
@@ -85,7 +86,12 @@ class Ldap {
   }
 
   async authenticate(sAMAccountName, password) {
-    const entry = await this.fetchEntry(sAMAccountName, false);
+    const entry = await this.fetchEntry(sAMAccountName, [
+      'mail',
+      'givenName',
+      'sn',
+    ]);
+
     if (!entry) {
       return null;
     }
