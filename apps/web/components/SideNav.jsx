@@ -35,9 +35,8 @@ const setSelected = (link, pathName) => {
   return Object.assign({}, link, { selected: link.href === pathName });
 };
 
-const SideNavLi = ({ key, selected, children }) => (
+const SideNavLi = ({ selected, children }) => (
   <li
-    key={key}
     className={`${
       selected
         ? 'rounded-[10%] border-b-2 border-sky-500 md:border-none md:bg-cyan-200'
