@@ -1,6 +1,5 @@
 {
   "name": "@ucfgos/ldap",
-  "version": "1.0.0",
   "description": "Ldap library to connect with UCF Active Directory",
   "main": "index.js",
   "scripts": {
