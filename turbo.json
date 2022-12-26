@@ -26,6 +26,7 @@
     "LDAP_REJECT_UNAUTHORIZED",
     "LDAP_KEY_PATH",
     "LDAP_CERT_PATH",
-    "SECRET_KEY"
+    "SECRET_KEY",
+    "npm_package_version"
   ]
 }
