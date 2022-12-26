@@ -111,7 +111,6 @@ export const getServerSideProps = async (context) => {
     context.res,
     authOptions
   );
-  new Date().toLocaleDateString('es', { dateStyle: 'full' });
   const user = toUser(await ldap.fetchEntry(`mail=${session.user.email}`));
   return {
     props: { user },
