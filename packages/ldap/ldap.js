@@ -1,6 +1,8 @@
 import { createClient } from 'ldapjs';
 import options from './options';
 
+const ATTRIBUTES = Object.keys(options.attributesMap);
+
 const userAttr = (ldapAttr) => {
   const attr = {};
   attr[options.attributesMap[ldapAttr.type]] = ldapAttr.val;
@@ -8,7 +10,6 @@ const userAttr = (ldapAttr) => {
 };
 
 const toUser = (entry) => {
-  const ATTRIBUTES = Object.keys(options.attributesMap);
   return entry.attributes
     .filter((attr) => ATTRIBUTES.includes(attr.type))
     .map((attr) => ({ val: attr.vals[0], type: attr.type }))
@@ -28,12 +29,12 @@ const rootBind = (client, cb) => {
   client.bind(options.bindDN, options.bindCredentials, cb);
 };
 
-const searchAccount = ({ client, sAMAccountName, attributes }, cb) => {
+const searchAccount = ({ client, filter, attributes }, cb) => {
   client.search(
     options.searchBase,
     {
-      filter: `sAMAccountName=${sAMAccountName}`,
       scope: 'sub',
+      filter,
       attributes,
     },
     cb
@@ -45,8 +46,8 @@ class Ldap {
     this.client = connect();
   }
 
-  fetchEntry(sAMAccountName, fetchAttributes) {
-    const attributes = fetchAttributes || ['mail', 'displayName'];
+  fetchEntry(filter, fetchAttributes) {
+    const attributes = fetchAttributes || ATTRIBUTES;
     return new Promise((resolve, reject) => {
       let entry;
       // eslint-disable-next-line no-unused-vars
@@ -56,7 +57,7 @@ class Ldap {
         }
 
         searchAccount(
-          { client: this.client, sAMAccountName, attributes },
+          { client: this.client, filter, attributes },
           (err, res) => {
             if (err) {
               reject(err);
@@ -84,8 +85,9 @@ class Ldap {
     });
   }
 
-  async authenticate(sAMAccountName, password) {
-    const entry = await this.fetchEntry(sAMAccountName, false);
+  async authenticate(filter, password) {
+    const entry = await this.fetchEntry(filter, ['mail', 'givenName', 'sn']);
+
     if (!entry) {
       return null;
     }

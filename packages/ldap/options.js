@@ -6,6 +6,19 @@ const ATTRIBUTES_MAP = {
   sAMAccountName: 'username',
   mail: 'email',
   displayName: 'name',
+  givenName: 'firstName',
+  accountExpires: 'accountExpirationDate',
+  sn: 'lastName',
+  title: 'title',
+  streetAddress: 'address',
+  co: 'country',
+  company: 'area',
+  lastLogonTimestamp: 'lastLogonTimestamp',
+  postOfficeBox: 'ic',
+  st: 'state',
+  department: 'department',
+  telephoneNumber: 'telephoneNumber',
+  l: 'city',
 };
 
 const options = {

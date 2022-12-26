@@ -15,12 +15,14 @@ export const authOptions = {
         }
 
         const ldapUser = await ldap.authenticate(
-          credentials.username,
+          `sAMAccountName=${credentials.username}`,
           credentials.password
         );
 
         if (ldapUser) {
-          return toUser(ldapUser);
+          const user = toUser(ldapUser);
+          user.name = `${user.firstName} ${user.lastName}`;
+          return user;
         }
 
         return null;
