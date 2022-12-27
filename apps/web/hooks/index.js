@@ -54,6 +54,15 @@ export const useQueryErrorMessage = () => {
   return null;
 };
 
+export const useDateLocale = () => {
+  return (date, dateStyle = 'long') =>
+    new Date(date).toLocaleDateString('es', { dateStyle });
+};
+
+export const useLdapToDate = () => {
+  return (time) => new Date(time / 1e4 - 1.16444736e13);
+};
+
 const UserDataContext = React.createContext(null);
 
 export const UserDataProvider = ({ user, children }) => (
