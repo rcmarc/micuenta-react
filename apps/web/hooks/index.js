@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 
 export function useRouterEvents(events) {
   const router = useRouter();
@@ -53,3 +53,11 @@ export const useQueryErrorMessage = () => {
   }
   return null;
 };
+
+const UserDataContext = React.createContext(null);
+
+export const UserDataProvider = ({ user, children }) => (
+  <UserDataContext.Provider value={user}>{children}</UserDataContext.Provider>
+);
+
+export const useUserData = () => useContext(UserDataContext);

@@ -1,10 +1,7 @@
-import { ldap, toUser } from '@ucfgos/ldap';
-import { unstable_getServerSession } from 'next-auth';
-
 import Avatar from '../components/Avatar';
+import { useUserData } from '../hooks';
 import MainLayout from '../layouts/MainLayout';
-import { useUserData } from '../lib/user';
-import { authOptions } from './api/auth/[...nextauth]';
+import { getUser } from '../lib/user';
 
 const FIELD_MAP = {
   city: 'Municipio',
@@ -106,12 +103,7 @@ Profile.getLayout = (page) => <MainLayout>{page}</MainLayout>;
 export default Profile;
 
 export const getServerSideProps = async (context) => {
-  const session = await unstable_getServerSession(
-    context.req,
-    context.res,
-    authOptions
-  );
-  const user = toUser(await ldap.fetchEntry(`mail=${session.user.email}`));
+  const user = await getUser(context);
   return {
     props: { user },
   };

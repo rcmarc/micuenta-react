@@ -1,5 +1,5 @@
 import { SessionProvider } from 'next-auth/react';
-import { UserDataProvider } from '../lib/user';
+import { UserDataProvider } from '../hooks';
 import '../styles/globals.css';
 
 function MyApp({ Component, pageProps: { session, user, ...pageProps } }) {
