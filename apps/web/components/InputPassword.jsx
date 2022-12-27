@@ -19,7 +19,7 @@ function InputPassword(props, ref) {
         {...props}
         ref={ref}
         type={show ? 'text' : 'password'}
-        placeholder="Contraseña"
+        placeholder={props.placeholder || 'Contraseña'}
         className={`!px-10 ${
           show ? 'tracking-normal' : 'tracking-widest'
         } placeholder:tracking-normal`}
