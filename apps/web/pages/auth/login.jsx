@@ -1,17 +1,14 @@
 import { useEffect, useState } from 'react';
-import { getCsrfToken, signIn } from 'next-auth/react';
+import { signIn } from 'next-auth/react';
 import { useForm } from 'react-hook-form';
-import { unstable_getServerSession } from 'next-auth';
 import { joiResolver } from '@hookform/resolvers/joi';
 import joi from 'joi';
 
-import { authOptions } from '../api/auth/[...nextauth]';
 import FormOnlyLayout from '../../layouts/FormOnlyLayout';
 import InputUsername from '../../components/InputUsername';
 import Form from '../../components/Form';
 import InputGroup from '../../components/InputGroup';
 import InputPassword from '../../components/InputPassword';
-import CsrfToken from '../../components/CsrfToken';
 import Button from '../../components/Button';
 import IndeterminateProgressBar from '../../components/IndeterminateProgressBar';
 import QueryErrorMessage from '../../components/QueryErrorMessage';
@@ -20,7 +17,7 @@ const required = joi.string().required();
 
 const resolver = joiResolver(
   joi.object({
-    csrfToken: required,
+    // csrfToken: required,
     username: required,
     password: required,
   }),
@@ -32,7 +29,7 @@ const resolver = joiResolver(
   }
 );
 
-export default function LoginPage({ csrfToken }) {
+export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false);
 
   const {
@@ -42,9 +39,6 @@ export default function LoginPage({ csrfToken }) {
     formState: { errors },
   } = useForm({
     resolver,
-    defaultValues: {
-      csrfToken,
-    },
   });
 
   const onSubmit = (body) => {
@@ -61,7 +55,6 @@ export default function LoginPage({ csrfToken }) {
     <>
       {isLoading ? <IndeterminateProgressBar /> : null}
       <Form onSubmit={handleSubmit(onSubmit)}>
-        <CsrfToken {...register('csrfToken')} />
         <InputGroup groupName="Credenciales">
           <InputUsername {...register('username')} error={errors.username} />
           <InputPassword {...register('password')} error={errors.password} />
@@ -75,29 +68,6 @@ export default function LoginPage({ csrfToken }) {
       </Form>
     </>
   );
-}
-
-export async function getServerSideProps(context) {
-  const token = await unstable_getServerSession(
-    context.req,
-    context.res,
-    authOptions
-  );
-
-  if (token) {
-    return {
-      redirect: {
-        destination: '/',
-        permanent: false,
-      },
-    };
-  }
-
-  return {
-    props: {
-      csrfToken: await getCsrfToken(context),
-    },
-  };
 }
 
 LoginPage.getLayout = (page) => (
