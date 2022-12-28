@@ -19,6 +19,7 @@ const ATTRIBUTES_MAP = {
   department: 'department',
   telephoneNumber: 'telephoneNumber',
   l: 'city',
+  pwdLastSet: 'pwdLastSet',
 };
 
 const options = {
