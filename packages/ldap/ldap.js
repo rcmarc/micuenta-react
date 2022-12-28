@@ -1,4 +1,4 @@
-import { createClient } from 'ldapjs';
+import { Change, createClient } from 'ldapjs';
 import options from './options';
 
 const ATTRIBUTES = Object.keys(options.attributesMap);
@@ -8,6 +8,8 @@ const userAttr = (ldapAttr) => {
   attr[options.attributesMap[ldapAttr.type]] = ldapAttr.val;
   return attr;
 };
+
+const encodePwd = (pwd) => Buffer.from(`"${pwd}"`, 'utf16le').toString();
 
 const toUser = (entry) => {
   return entry.attributes
@@ -41,9 +43,57 @@ const searchAccount = ({ client, filter, attributes }, cb) => {
   );
 };
 
+class LdapBadCredentialsError extends Error {
+  constructor() {
+    super();
+    this.name = 'LdapBadCredentialsError';
+    this.message = 'Credenciales incorrectas';
+  }
+}
+
+class LdapPasswordCriteriaError extends Error {
+  constructor() {
+    super();
+    this.name = 'LdapPasswordCriteriaError';
+    this.message = 'No ha sido posible cambiar la contraseña';
+  }
+}
+
 class Ldap {
   constructor() {
     this.client = connect();
+  }
+
+  async changePwd(filter, oldPwd, newPwd) {
+    const entry = await this.authenticate(filter, oldPwd);
+    if (!entry) throw new LdapBadCredentialsError();
+    return await new Promise((resolve, reject) => {
+      // eslint-disable-next-line no-unused-vars
+      rootBind(this.client, (err, res) => {
+        if (err) return reject(err);
+        this.client.modify(
+          entry.object.dn,
+          [
+            new Change({
+              operation: 'delete',
+              modification: {
+                unicodePwd: encodePwd(oldPwd),
+              },
+            }),
+            new Change({
+              operation: 'add',
+              modification: {
+                unicodePwd: encodePwd(newPwd),
+              },
+            }),
+          ],
+          (err) => {
+            if (err) return reject(new LdapPasswordCriteriaError());
+            return resolve();
+          }
+        );
+      });
+    });
   }
 
   fetchEntry(filter, fetchAttributes) {
@@ -105,6 +155,6 @@ class Ldap {
 
 const ldap = new Ldap();
 
-export { toUser };
+export { toUser, LdapBadCredentialsError };
 
 export default ldap;
