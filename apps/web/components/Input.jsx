@@ -1,7 +1,9 @@
 import React from 'react';
 import ErrorMessage from './ErrorMessage';
+import HelpList from './HelpList';
+import HelpListItem from './HelpListItem';
 
-const Input = ({ className, error, ...props }, ref) => (
+const Input = ({ className, error, messages, ...props }, ref) => (
   <>
     <input
       {...props}
@@ -15,6 +17,15 @@ const Input = ({ className, error, ...props }, ref) => (
     {error ? (
       <ErrorMessage className="absolute">{error.message}</ErrorMessage>
     ) : null}
+    {messages && (
+      <div className="mt-4">
+        <HelpList>
+          {messages.map((msg, index) => (
+            <HelpListItem key={index}>{msg}</HelpListItem>
+          ))}
+        </HelpList>
+      </div>
+    )}
   </>
 );
 
