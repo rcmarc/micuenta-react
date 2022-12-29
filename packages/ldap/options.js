@@ -20,6 +20,7 @@ const ATTRIBUTES_MAP = {
   telephoneNumber: 'telephoneNumber',
   l: 'city',
   pwdLastSet: 'pwdLastSet',
+  'msDS-UserPasswordExpiryTimeComputed': 'pwdExpirationDate',
 };
 
 const options = {
