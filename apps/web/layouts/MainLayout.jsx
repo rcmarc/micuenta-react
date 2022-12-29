@@ -11,7 +11,7 @@ function MainLayout({ children }) {
         <SideNav
           className={'md:w-4/12 md:flex-col lg:mr-20 lg:w-3/12 xl:w-2/12'}
         />
-        {children}
+        <div className="w-full">{children}</div>
       </div>
     </>
   );
