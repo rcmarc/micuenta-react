@@ -42,6 +42,7 @@ const ChangePasswordAction = () => {
   const ldapToDate = useLdapToDate();
 
   const pwdLastSet = dateLocale(ldapToDate(user.pwdLastSet));
+  const pwdExpirationDate = dateLocale(ldapToDate(user.pwdExpirationDate));
   return (
     <>
       <Action
@@ -53,6 +54,10 @@ const ChangePasswordAction = () => {
         <HelpListItem>
           Su contraseña fue cambiada por última vez el{' '}
           <span className="font-semibold">{pwdLastSet}</span>
+        </HelpListItem>
+        <HelpListItem>
+          Su contraseña expira el{' '}
+          <span className="font-semibold">{pwdExpirationDate}</span>
         </HelpListItem>
       </HelpList>
     </>

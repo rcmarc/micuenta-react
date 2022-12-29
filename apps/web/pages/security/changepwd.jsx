@@ -10,8 +10,8 @@ import InputGroup from '../../components/InputGroup';
 import InputPassword from '../../components/InputPassword';
 import QueryErrorMessage from '../../components/QueryErrorMessage';
 import MainLayout from '../../layouts/MainLayout';
-import { useState } from 'react';
 import Responsive from '../../components/Responsive';
+import { useErrorPopupMessage } from '../../hooks';
 
 const messages = {
   currentPwd: ['Debe ser su contraseña actual'],
@@ -47,28 +47,9 @@ const ChangePasswordContainer = ({ children }) => (
   <div className="my-5 rounded-lg border p-5 shadow-sm md:my-0">{children}</div>
 );
 
-const ErrorPopup = ({ show, onClose, children }) => {
-  const location = show ? 'bottom-10' : 'bottom-[-20%]';
-  return (
-    <div className={`fixed z-10 ${location} w-screen transition-[bottom]`}>
-      <div
-        className={`mx-auto flex max-w-max rounded-3xl border-pink-400 bg-pink-400 p-3 text-white`}
-      >
-        {children}
-        <button
-          onClick={onClose}
-          className="ml-2 rounded-full px-2 font-semibold transition-[color_background-color] hover:bg-white hover:text-pink-400"
-        >
-          X
-        </button>
-      </div>
-    </div>
-  );
-};
-
 function ChangePassword({ csrfToken }) {
-  const [responseError, setResponseError] = useState();
-  const [showPopup, setShowPopup] = useState();
+  const { setErrorPopupMessage, isShowingErrorPopup, setShowingErrorPopup } =
+    useErrorPopupMessage();
 
   const {
     register,
@@ -83,7 +64,7 @@ function ChangePassword({ csrfToken }) {
 
   const onSubmit = async (body) => {
     // Hide popup
-    if (showPopup) setShowPopup(false);
+    if (isShowingErrorPopup) setShowingErrorPopup(false);
 
     const options = {
       method: 'POST',
@@ -101,48 +82,41 @@ function ChangePassword({ csrfToken }) {
     // Handle error
     const result = await response.json();
 
-    console.log(result);
-    setResponseError(result.message);
-    setShowPopup(true);
+    setErrorPopupMessage(result.message);
   };
 
   return (
-    <>
-      <ErrorPopup show={showPopup} onClose={() => setShowPopup(false)}>
-        {responseError}
-      </ErrorPopup>
-      <ChangePasswordContainer>
-        <Form onSubmit={handleSubmit(onSubmit)}>
-          <CsrfToken {...register('csrfToken')} />
-          <InputGroup groupName="Cambiar contraseña">
-            <InputPassword
-              {...register('currentPwd')}
-              placeholder="Contraseña actual"
-              error={errors.currentPwd}
-              messages={messages.currentPwd}
-            />
-            <InputPassword
-              {...register('newPwd')}
-              placeholder="Contraseña nueva"
-              error={errors.newPwd}
-              messages={messages.newPwd}
-            />
-            <InputPassword
-              {...register('newPwdRepeat')}
-              placeholder="Repita la contraseña"
-              error={errors.newPwdRepeat}
-              messages={messages.newPwdRepeat}
-            />
-          </InputGroup>
-          <div className="flex justify-between">
-            <QueryErrorMessage className="pt-2" />
-            <Button className={'p-2'} type="submit">
-              Cambiar Contraseña
-            </Button>
-          </div>
-        </Form>
-      </ChangePasswordContainer>
-    </>
+    <ChangePasswordContainer>
+      <Form onSubmit={handleSubmit(onSubmit)}>
+        <CsrfToken {...register('csrfToken')} />
+        <InputGroup groupName="Cambiar contraseña">
+          <InputPassword
+            {...register('currentPwd')}
+            placeholder="Contraseña actual"
+            error={errors.currentPwd}
+            messages={messages.currentPwd}
+          />
+          <InputPassword
+            {...register('newPwd')}
+            placeholder="Contraseña nueva"
+            error={errors.newPwd}
+            messages={messages.newPwd}
+          />
+          <InputPassword
+            {...register('newPwdRepeat')}
+            placeholder="Repita la contraseña"
+            error={errors.newPwdRepeat}
+            messages={messages.newPwdRepeat}
+          />
+        </InputGroup>
+        <div className="flex justify-between">
+          <QueryErrorMessage className="pt-2" />
+          <Button className={'p-2'} type="submit">
+            Cambiar Contraseña
+          </Button>
+        </div>
+      </Form>
+    </ChangePasswordContainer>
   );
 }
 
