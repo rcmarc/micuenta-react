@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router';
 import React, { useContext, useEffect, useState } from 'react';
+import ErrorPopup from '../components/ErrorPopup';
 
 export function useRouterEvents(events) {
   const router = useRouter();
@@ -70,3 +71,37 @@ export const UserDataProvider = ({ user, children }) => (
 );
 
 export const useUserData = () => useContext(UserDataContext);
+
+const ErrorPopupMessageContext = React.createContext(null);
+
+export const ErrorPopupMessageProvider = ({ children }) => {
+  const [errorPopupMessage, setErrorMessage] = useState();
+  const [isShowingErrorPopup, setShowingErrorPopup] = useState(false);
+  const onClose = () => {
+    setShowingErrorPopup(false);
+  };
+  return (
+    <ErrorPopupMessageContext.Provider
+      value={{
+        errorPopupMessage,
+        isShowingErrorPopup,
+        setShowingErrorPopup,
+        setErrorPopupMessage: (msg) => {
+          setShowingErrorPopup(Boolean(msg));
+          setErrorMessage(msg);
+        },
+      }}
+    >
+      {children}
+      <ErrorPopup
+        show={isShowingErrorPopup}
+        onClose={onClose}
+        message={errorPopupMessage}
+      />
+    </ErrorPopupMessageContext.Provider>
+  );
+};
+
+export const useErrorPopupMessage = () => {
+  return useContext(ErrorPopupMessageContext);
+};
