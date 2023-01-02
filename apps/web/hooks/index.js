@@ -105,3 +105,47 @@ export const ErrorPopupMessageProvider = ({ children }) => {
 export const useErrorPopupMessage = () => {
   return useContext(ErrorPopupMessageContext);
 };
+
+export const useFetch = () => {
+  const { setErrorPopupMessage, isShowingErrorPopup, setShowingErrorPopup } =
+    useErrorPopupMessage();
+
+  const options = {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  };
+
+  const getOptions = ({ body, method }) => {
+    return Object.assign({}, options, { body: JSON.stringify(body), method });
+  };
+
+  const doFetch = async ({ url, method, body }) => {
+    if (isShowingErrorPopup) {
+      setShowingErrorPopup(false);
+    }
+
+    const response = await fetch(url, getOptions({ method, body }));
+
+    if (response.status >= 500) {
+      const result = await response.json();
+
+      setErrorPopupMessage(result.message);
+    }
+
+    return response;
+  };
+
+  const get = (url) => {
+    return doFetch({ url, method: 'GET' });
+  };
+
+  const post = (url, body) => {
+    return doFetch({ url, body, method: 'POST' });
+  };
+
+  return {
+    get,
+    post,
+  };
+};
