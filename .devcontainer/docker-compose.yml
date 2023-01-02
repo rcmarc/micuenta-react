@@ -3,8 +3,12 @@ services:
   web:
     build:
       context: .devcontainer
-    environment: 
+    environment:
       - NODE_ENV:development
 
     volumes:
       - .:/workspaces/micuenta:cached
+
+  database:
+    ports:
+      - 27017:27017
