@@ -136,7 +136,7 @@ class Ldap {
   }
 
   async authenticate(filter, password) {
-    const entry = await this.fetchEntry(filter, ['mail', 'givenName', 'sn']);
+    const entry = await this.fetchEntry(filter);
 
     if (!entry) {
       return null;
