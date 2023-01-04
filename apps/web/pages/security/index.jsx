@@ -25,14 +25,21 @@ const ActionCenterText = ({ children }) => (
   </p>
 );
 
-const Action = ({ title, centerText, href }) => (
-  <Link href={href}>
-    <ActionContainer>
-      <ActionText>{title}</ActionText>
-      {centerText && <ActionCenterText>{centerText}</ActionCenterText>}
-      <FaAngleRight size={20} className="mt-1 text-slate-600" />
-    </ActionContainer>
-  </Link>
+const Action = ({ title, centerText, href, children }) => (
+  <li>
+    <Link href={href}>
+      <ActionContainer>
+        <ActionText>{title}</ActionText>
+        {centerText && <ActionCenterText>{centerText}</ActionCenterText>}
+        <FaAngleRight size={20} className="mt-1 text-slate-600" />
+      </ActionContainer>
+    </Link>
+    {children}
+  </li>
+);
+
+const ActionList = ({ children }) => (
+  <ul className="[&>li]:mb-5">{children}</ul>
 );
 
 const ChangePasswordAction = () => {
@@ -44,12 +51,11 @@ const ChangePasswordAction = () => {
   const pwdLastSet = dateLocale(ldapToDate(user.pwdLastSet));
   const pwdExpirationDate = dateLocale(ldapToDate(user.pwdExpirationDate));
   return (
-    <>
-      <Action
-        href={router.pathname + '/changepwd'}
-        title="Contraseña"
-        centerText={'*'.repeat(10)}
-      />
+    <Action
+      href={router.pathname + '/changepwd'}
+      title="Contraseña"
+      centerText={'*'.repeat(10)}
+    >
       <HelpList>
         <HelpListItem>
           Su contraseña fue cambiada por última vez el{' '}
@@ -60,15 +66,26 @@ const ChangePasswordAction = () => {
           <span className="font-semibold">{pwdExpirationDate}</span>
         </HelpListItem>
       </HelpList>
-    </>
+    </Action>
+  );
+};
+
+const SecurityQuestionsAction = () => {
+  const router = useRouter();
+  return (
+    <Action
+      href={router.pathname + '/questions'}
+      title="Preguntas de Seguridad"
+    />
   );
 };
 
 function Security() {
   return (
-    <>
+    <ActionList>
       <ChangePasswordAction />
-    </>
+      <SecurityQuestionsAction />
+    </ActionList>
   );
 }
 
