@@ -4,3 +4,7 @@ const uri = `mongodb://${process.env.MONGODB_ROOT_USER}:${process.env.MONGODB_RO
 
 const client = new MongoClient(uri);
 export const database = client.db('micuenta');
+
+export function isCollectionEmpty(coll) {
+  return coll.countDocuments().then((count) => count === 0);
+}

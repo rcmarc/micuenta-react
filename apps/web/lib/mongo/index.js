@@ -1,35 +1,12 @@
-export * from './securityQuestions';
-export * from './config';
-
-import { CONFIG_COLL } from './config';
-import {
-  SECURITY_QUESTIONS_COLL,
-  SECURITY_QUESTIONS,
-} from './securityQuestions';
+import users from './user';
+import config, { setUpConfig } from './config';
+import securityQuestions, { setUpQuestions } from './securityQuestions';
 
 let setup = false;
 
-const setUpSecurityQuestions = async () => {
-  if ((await SECURITY_QUESTIONS_COLL.countDocuments()) === 0) {
-    // insert the security questions
-    return SECURITY_QUESTIONS_COLL.insertMany(
-      SECURITY_QUESTIONS.map((q, i) => ({ _id: i, text: q }))
-    );
-  }
-};
-
-const setUpConfig = async () => {
-  if ((await CONFIG_COLL.countDocuments()) === 0) {
-    // insert the config document
-    return CONFIG_COLL.insertOne({
-      securityQuestionsAmountRequired: 3,
-    });
-  }
-};
-
-const setUpMongo = async () => {
+export const setUpMongo = async () => {
   if (!setup) {
-    await Promise.all([setUpSecurityQuestions(), setUpConfig()]);
+    await Promise.all([setUpQuestions(), setUpConfig()]);
   }
   setup = true;
 };
@@ -37,3 +14,11 @@ const setUpMongo = async () => {
 (async () => {
   await setUpMongo();
 })();
+
+const mongo = {
+  users,
+  config,
+  securityQuestions,
+};
+
+export default mongo;
