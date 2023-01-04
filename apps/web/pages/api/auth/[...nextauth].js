@@ -1,6 +1,7 @@
 import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 
+import mongo from '../../../lib/mongo';
 import { ldap, toUser } from '@ucfgos/ldap';
 
 export const authOptions = {
@@ -22,6 +23,7 @@ export const authOptions = {
         if (ldapUser) {
           const user = toUser(ldapUser);
           user.name = `${user.firstName} ${user.lastName}`;
+          await mongo.users.insertOneIfNotExists(user);
           return user;
         }
 
