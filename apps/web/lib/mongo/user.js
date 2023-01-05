@@ -3,23 +3,27 @@ import { database } from './mongo';
 const collection = database.collection('users');
 
 async function insertOneIfNotExists(user) {
-  return collection
-    .findOne({ username: user.username })
-    .then(async (exists) => {
-      if (!exists) {
-        return await insertOne(user);
-      }
-      return false;
-    });
+  const exists = await collection.findOne({ username: user.username });
+  if (!exists) {
+    return await insertOne(user);
+  }
+  return false;
 }
 
-async function insertOne(user) {
+function insertOne(user) {
   return collection.insertOne(user);
+}
+
+function setSecurityQuestions(filter, questions) {
+  return collection.updateOne(filter, {
+    $set: { securityQuestions: questions },
+  });
 }
 
 const instance = {
   insertOne,
   insertOneIfNotExists,
+  setSecurityQuestions,
 };
 
 export default instance;
