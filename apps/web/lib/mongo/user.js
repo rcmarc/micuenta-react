@@ -1,17 +1,16 @@
-import { MongoServerError } from 'mongodb';
 import { database } from './mongo';
 
 const collection = database.collection('users');
 
 async function insertOneIfNotExists(user) {
-  try {
-    return await insertOne(user);
-  } catch (err) {
-    if (err instanceof MongoServerError) {
+  return collection
+    .findOne({ username: user.username })
+    .then(async (exists) => {
+      if (!exists) {
+        return await insertOne(user);
+      }
       return false;
-    }
-    throw err;
-  }
+    });
 }
 
 async function insertOne(user) {
