@@ -1,8 +1,13 @@
-import React, { useContext } from 'react';
-const UserDataContext = React.createContext(null);
+import { ldap, toUser } from '@ucfgos/ldap';
+import { unstable_getServerSession } from 'next-auth';
 
-export const UserDataProvider = ({ user, children }) => (
-  <UserDataContext.Provider value={user}>{children}</UserDataContext.Provider>
-);
+import { authOptions } from '../pages/api/auth/[...nextauth]';
 
-export const useUserData = () => useContext(UserDataContext);
+export const getUser = async (context) => {
+  const session = await unstable_getServerSession(
+    context.req,
+    context.res,
+    authOptions
+  );
+  return toUser(await ldap.fetchEntry(`mail=${session.user.email}`));
+};

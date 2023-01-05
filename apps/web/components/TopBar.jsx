@@ -64,7 +64,7 @@ function TopBar() {
         {showPopover && (
           <div
             onMouseDown={onMouseDown}
-            className="absolute top-[5em] right-[1.5em] outline-none"
+            className="absolute top-[5em] right-[1.5em] z-50 outline-none"
           >
             <LogoutPopover />
           </div>

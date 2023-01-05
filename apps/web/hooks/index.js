@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+import ErrorPopup from '../components/ErrorPopup';
 
 export function useRouterEvents(events) {
   const router = useRouter();
@@ -52,4 +53,99 @@ export const useQueryErrorMessage = () => {
     return error[0].message;
   }
   return null;
+};
+
+export const useDateLocale = () => {
+  return (date, dateStyle = 'long') =>
+    new Date(date).toLocaleDateString('es', { dateStyle });
+};
+
+export const useLdapToDate = () => {
+  return (time) => new Date(time / 1e4 - 1.16444736e13);
+};
+
+const UserDataContext = React.createContext(null);
+
+export const UserDataProvider = ({ user, children }) => (
+  <UserDataContext.Provider value={user}>{children}</UserDataContext.Provider>
+);
+
+export const useUserData = () => useContext(UserDataContext);
+
+const ErrorPopupMessageContext = React.createContext(null);
+
+export const ErrorPopupMessageProvider = ({ children }) => {
+  const [errorPopupMessage, setErrorMessage] = useState();
+  const [isShowingErrorPopup, setShowingErrorPopup] = useState(false);
+  const onClose = () => {
+    setShowingErrorPopup(false);
+  };
+  return (
+    <ErrorPopupMessageContext.Provider
+      value={{
+        errorPopupMessage,
+        isShowingErrorPopup,
+        setShowingErrorPopup,
+        setErrorPopupMessage: (msg) => {
+          setShowingErrorPopup(Boolean(msg));
+          setErrorMessage(msg);
+        },
+      }}
+    >
+      {children}
+      <ErrorPopup
+        show={isShowingErrorPopup}
+        onClose={onClose}
+        message={errorPopupMessage}
+      />
+    </ErrorPopupMessageContext.Provider>
+  );
+};
+
+export const useErrorPopupMessage = () => {
+  return useContext(ErrorPopupMessageContext);
+};
+
+export const useFetch = () => {
+  const { setErrorPopupMessage, isShowingErrorPopup, setShowingErrorPopup } =
+    useErrorPopupMessage();
+
+  const options = {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  };
+
+  const getOptions = ({ body, method }) => {
+    return Object.assign({}, options, { body: JSON.stringify(body), method });
+  };
+
+  const doFetch = async ({ url, method, body }) => {
+    if (isShowingErrorPopup) {
+      setShowingErrorPopup(false);
+    }
+
+    const response = await fetch(url, getOptions({ method, body }));
+
+    if (response.status >= 500) {
+      const result = await response.json();
+
+      setErrorPopupMessage(result.message);
+    }
+
+    return response;
+  };
+
+  const get = (url) => {
+    return doFetch({ url, method: 'GET' });
+  };
+
+  const post = (url, body) => {
+    return doFetch({ url, body, method: 'POST' });
+  };
+
+  return {
+    get,
+    post,
+  };
 };
