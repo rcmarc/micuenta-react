@@ -1,7 +1,7 @@
-import Error from '../components/Error';
+import ErrorPageComponent from '../components/ErrorPageComponent';
 
 function InternalServerErrorPage() {
-  return <Error code={500} />;
+  return <ErrorPageComponent code={500} />;
 }
 
 export default InternalServerErrorPage;

@@ -17,7 +17,7 @@ const ERRORS = [
   },
 ];
 
-export default function Error({ code }) {
+function ErrorPageComponent({ code }) {
   const error = ERRORS.find((err) => err.code === code);
   return (
     <>
@@ -47,3 +47,5 @@ export default function Error({ code }) {
     </>
   );
 }
+
+export default ErrorPageComponent;
