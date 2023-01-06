@@ -11,10 +11,4 @@
   "[javascript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-
-  "files.exclude": {
-    "**/node_modules": false,
-    "node_modules": true,
-    "*[!test]**/node_modules": true
-  }
 }
