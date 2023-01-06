@@ -15,65 +15,6 @@ import { useFetch } from '../../hooks';
 import MainLayout from '../../layouts/MainLayout';
 import mongo from '../../lib/mongo';
 
-const SecurityQuestionsContainer = ({ children }) => (
-  <div className="relative my-5 h-[290px] overflow-hidden rounded-lg border p-5 shadow-sm md:my-0">
-    {children}
-  </div>
-);
-
-const Question = ({ show, children }) => {
-  const left = show ? 'left-5' : '-left-[90%]';
-  return (
-    <div
-      className={`absolute ${left} top-10 z-10 w-[90%] transition-[left] duration-700 [&>div]:mb-7`}
-    >
-      {children}
-    </div>
-  );
-};
-
-const QuestionIndex = ({ index }) => (
-  <h2 className="mt-5 mb-2">Pregunta {index}</h2>
-);
-
-const Options = ({ values }) => {
-  return values.map((q, i) => (
-    <option key={i} value={q._id}>
-      {q.text}
-    </option>
-  ));
-};
-
-const FormButtons = ({ isLast, onBack }) => (
-  <div className="absolute bottom-3 flex w-[90%] justify-between">
-    <Button type="button" onClick={onBack} className="p-1">
-      Atrás
-    </Button>
-    <Button className="p-1">{isLast ? 'Terminar' : 'Siguiente'}</Button>
-  </div>
-);
-
-const getResolver = (n) =>
-  joiResolver(
-    Joi.object(
-      Object.assign(
-        { csrfToken: Joi.string().required() },
-        [...Array(n).keys()].reduce((p, c) => {
-          p[`question_${c}`] = Joi.number().required();
-          p[`answer_${c}`] = Joi.string().required();
-          return p;
-        }, {})
-      )
-    ),
-    {
-      abortEarly: true,
-      messages: {
-        'string.empty': 'Campo requerido',
-        'number.base': 'Campo requerido',
-      },
-    }
-  );
-
 function SecurityQuestions({
   csrfToken,
   securityQuestions,
@@ -157,6 +98,70 @@ function SecurityQuestions({
         <FormButtons isLast={isLastQuestion} onBack={onBack} />
       </Form>
     </SecurityQuestionsContainer>
+  );
+}
+
+function SecurityQuestionsContainer({ children }) {
+  return (
+    <div className="relative my-5 h-[290px] overflow-hidden rounded-lg border p-5 shadow-sm md:my-0">
+      {children}
+    </div>
+  );
+}
+
+function Question({ show, children }) {
+  const left = show ? 'left-5' : '-left-[90%]';
+  return (
+    <div
+      className={`absolute ${left} top-10 z-10 w-[90%] transition-[left] duration-700 [&>div]:mb-7`}
+    >
+      {children}
+    </div>
+  );
+}
+
+function QuestionIndex({ index }) {
+  return <h2 className="mt-5 mb-2">Pregunta {index}</h2>;
+}
+
+function Options({ values }) {
+  return values.map((q, i) => (
+    <option key={i} value={q._id}>
+      {q.text}
+    </option>
+  ));
+}
+
+function FormButtons({ isLast, onBack }) {
+  return (
+    <div className="absolute bottom-3 flex w-[90%] justify-between">
+      <Button type="button" onClick={onBack} className="p-1">
+        Atrás
+      </Button>
+      <Button className="p-1">{isLast ? 'Terminar' : 'Siguiente'}</Button>
+    </div>
+  );
+}
+
+function getResolver(n) {
+  return joiResolver(
+    Joi.object(
+      Object.assign(
+        { csrfToken: Joi.string().required() },
+        [...Array(n).keys()].reduce((p, c) => {
+          p[`question_${c}`] = Joi.number().required();
+          p[`answer_${c}`] = Joi.string().required();
+          return p;
+        }, {})
+      )
+    ),
+    {
+      abortEarly: true,
+      messages: {
+        'string.empty': 'Campo requerido',
+        'number.base': 'Campo requerido',
+      },
+    }
   );
 }
 

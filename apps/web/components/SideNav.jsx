@@ -31,41 +31,6 @@ const LINKS = [
   },
 ];
 
-const setSelected = (link, pathName) => {
-  return Object.assign({}, link, { selected: link.href === pathName });
-};
-
-const SideNavLi = ({ selected, children }) => (
-  <li
-    className={`${
-      selected
-        ? 'rounded-[10%] border-b-2 border-sky-500 md:border-none md:bg-cyan-200'
-        : 'md:hover:bg-slate-200'
-    }  mx-5 sm:mx-auto md:mx-0 md:rounded-r-full`}
-  >
-    {children}
-  </li>
-);
-
-const SideNavLink = ({ link }) => (
-  <Link href={link.href}>
-    <div className="flex py-3 px-0 sm:px-3 md:px-8">
-      {React.createElement(link.icon, {
-        className: `text-2xl ${
-          link.selected ? 'text-sky-500' : 'text-slate-500'
-        } mr-3 hidden sm:block`,
-      })}
-      <p
-        className={`whitespace-nowrap font-medium tracking-wide ${
-          link.selected ? 'text-sky-500 md:text-slate-600' : 'text-slate-600'
-        }`}
-      >
-        {link.text}
-      </p>
-    </div>
-  </Link>
-);
-
 function SideNav({ className }) {
   const router = useRouter();
   return (
@@ -81,6 +46,43 @@ function SideNav({ className }) {
       </ul>
     </nav>
   );
+}
+
+function setSelected(link, pathName) {
+  return Object.assign({}, link, { selected: link.href === pathName });
+}
+
+function SideNavLi({ selected, children }) {
+  return (
+    <li
+      className={`${
+        selected
+          ? 'rounded-[10%] border-b-2 border-sky-500 md:border-none md:bg-cyan-200'
+          : 'md:hover:bg-slate-200'
+      }  mx-5 sm:mx-auto md:mx-0 md:rounded-r-full`}
+    >
+      {children}
+    </li>
+  );
+}
+
+function SideNavLink({ link }) {
+  <Link href={link.href}>
+    <div className="flex py-3 px-0 sm:px-3 md:px-8">
+      {React.createElement(link.icon, {
+        className: `text-2xl ${
+          link.selected ? 'text-sky-500' : 'text-slate-500'
+        } mr-3 hidden sm:block`,
+      })}
+      <p
+        className={`whitespace-nowrap font-medium tracking-wide ${
+          link.selected ? 'text-sky-500 md:text-slate-600' : 'text-slate-600'
+        }`}
+      >
+        {link.text}
+      </p>
+    </div>
+  </Link>;
 }
 
 export default SideNav;

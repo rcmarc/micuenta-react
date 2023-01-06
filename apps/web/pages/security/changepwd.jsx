@@ -13,40 +13,6 @@ import MainLayout from '../../layouts/MainLayout';
 import Responsive from '../../components/Responsive';
 import { useErrorPopupMessage } from '../../hooks';
 
-const messages = {
-  currentPwd: ['Debe ser su contraseña actual'],
-  newPwd: [
-    'La contraseña debe tener una letra mayúscula un dígito y un caracter especial',
-    'No debe ser alguna usada anteriormente',
-  ],
-  newPwdRepeat: ['Debe coincidir con la contraseña nueva'],
-};
-
-const required = Joi.string().required();
-
-const resolver = joiResolver(
-  Joi.object({
-    csrfToken: required,
-    currentPwd: required,
-    newPwd: required.pattern(
-      /(?=.*\d)(?=.*[A-Z])(?=.*[@$!%*#?&-])[\w\d@$!%*#?&-]{8,}/
-    ),
-    newPwdRepeat: Joi.ref('newPwd'),
-  }),
-  {
-    abortEarly: false,
-    messages: {
-      'string.empty': 'Campo requerido',
-      'string.pattern.base': 'La contraseña no cumple con los requerimientos',
-      'any.only': 'Las contraseñas no coinciden',
-    },
-  }
-);
-
-const ChangePasswordContainer = ({ children }) => (
-  <div className="my-5 rounded-lg border p-5 shadow-sm md:my-0">{children}</div>
-);
-
 function ChangePassword({ csrfToken }) {
   const { setErrorPopupMessage, isShowingErrorPopup, setShowingErrorPopup } =
     useErrorPopupMessage();
@@ -56,7 +22,7 @@ function ChangePassword({ csrfToken }) {
     handleSubmit,
     formState: { errors },
   } = useForm({
-    resolver,
+    resolver: getResolver(),
     defaultValues: {
       csrfToken,
     },
@@ -117,6 +83,46 @@ function ChangePassword({ csrfToken }) {
         </div>
       </Form>
     </ChangePasswordContainer>
+  );
+}
+
+const messages = {
+  currentPwd: ['Debe ser su contraseña actual'],
+  newPwd: [
+    'La contraseña debe tener una letra mayúscula un dígito y un caracter especial',
+    'No debe ser alguna usada anteriormente',
+  ],
+  newPwdRepeat: ['Debe coincidir con la contraseña nueva'],
+};
+
+const required = Joi.string().required();
+
+function getResolver() {
+  return joiResolver(
+    Joi.object({
+      csrfToken: required,
+      currentPwd: required,
+      newPwd: required.pattern(
+        /(?=.*\d)(?=.*[A-Z])(?=.*[@$!%*#?&-])[\w\d@$!%*#?&-]{8,}/
+      ),
+      newPwdRepeat: Joi.ref('newPwd'),
+    }),
+    {
+      abortEarly: false,
+      messages: {
+        'string.empty': 'Campo requerido',
+        'string.pattern.base': 'La contraseña no cumple con los requerimientos',
+        'any.only': 'Las contraseñas no coinciden',
+      },
+    }
+  );
+}
+
+function ChangePasswordContainer({ children }) {
+  return (
+    <div className="my-5 rounded-lg border p-5 shadow-sm md:my-0">
+      {children}
+    </div>
   );
 }
 

@@ -2,19 +2,6 @@ import { useEffect, useRef, useState } from 'react';
 
 import { useRouterEvents } from '../hooks';
 
-const widthValues = [20, 30, 40, 50];
-const durationValues = [100, 150, 200, 300];
-
-const getDuration = () => {
-  return durationValues[Math.floor(Math.random() * durationValues.length)];
-};
-
-const getWidth = () => {
-  return widthValues[Math.floor(Math.random() * widthValues.length)];
-};
-
-const getWidthStr = (width) => `${width.value}${width.type}`;
-
 function ProgressBar() {
   const [opacity, setOpacity] = useState(1);
   const [duration, setDuration] = useState(getDuration());
@@ -61,6 +48,21 @@ function ProgressBar() {
       className="absolute top-0 left-0 h-1 rounded-r-full bg-cyan-500 transition-[width_opacity]"
     />
   );
+}
+
+const widthValues = [20, 30, 40, 50];
+const durationValues = [100, 150, 200, 300];
+
+function getDuration() {
+  return durationValues[Math.floor(Math.random() * durationValues.length)];
+}
+
+function getWidth() {
+  return widthValues[Math.floor(Math.random() * widthValues.length)];
+}
+
+function getWidthStr(width) {
+  return `${width.value}${width.type}`;
 }
 
 export default ProgressBar;

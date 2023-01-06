@@ -2,12 +2,6 @@ import React from 'react';
 import ErrorMessage from './ErrorMessage';
 import InputContainer from './InputContainer';
 
-const InputSelectPlaceholder = ({ placeholder }) => (
-  <option value={placeholder} disabled>
-    {placeholder}
-  </option>
-);
-
 function InputSelect({ placeholder, error, children, ...props }, ref) {
   return (
     <InputContainer>
@@ -26,6 +20,14 @@ function InputSelect({ placeholder, error, children, ...props }, ref) {
         <ErrorMessage className="absolute">{error.message}</ErrorMessage>
       )}
     </InputContainer>
+  );
+}
+
+function InputSelectPlaceholder({ placeholder }) {
+  return (
+    <option value={placeholder} disabled>
+      {placeholder}
+    </option>
   );
 }
 
