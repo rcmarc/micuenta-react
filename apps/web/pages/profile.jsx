@@ -1,4 +1,4 @@
-import Avatar from '../components/Avatar';
+import Avatar from '../components/avatar/Avatar';
 import { useUserData } from '../hooks';
 import MainLayout from '../layouts/MainLayout';
 import { getUser } from '../lib/user';

@@ -1,6 +1,6 @@
 import { signOut, useSession } from 'next-auth/react';
 
-import Avatar from './Avatar';
+import Avatar from './avatar/Avatar';
 import Button from './Button';
 
 function LogoutPopover() {

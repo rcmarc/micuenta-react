@@ -1,6 +1,6 @@
 import { useSession } from 'next-auth/react';
 
-function Avatar({ className, size }) {
+export function Avatar({ className, size }) {
   const session = useSession();
   let initials;
 
@@ -58,5 +58,3 @@ function AvatarContainer({ children, className, size }) {
 function AvatarInitials({ children, size }) {
   return <p className={`${sizes[size || 'md'].text} text-white`}>{children}</p>;
 }
-
-export default Avatar;

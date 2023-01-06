@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 
-import Avatar from './Avatar';
+import Avatar from './avatar/Avatar';
 import Logo from './Logo';
 import LogoText from './LogoText';
 import LogoutPopover from './LogoutPopover';
