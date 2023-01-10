@@ -1,5 +1,5 @@
 function InputLeftElement({ children }) {
-  return <div className="absolute top-3 left-3">{children}</div>;
+  return <div className="absolute top-4 left-3">{children}</div>;
 }
 
 export default InputLeftElement;

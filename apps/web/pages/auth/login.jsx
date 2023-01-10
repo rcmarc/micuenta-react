@@ -7,10 +7,10 @@ import joi from 'joi';
 
 import { authOptions } from '../api/auth/[...nextauth]';
 import FormOnlyLayout from '../../layouts/FormOnlyLayout';
-import InputUsername from '../../components/InputUsername';
 import Form from '../../components/Form';
-import InputGroup from '../../components/InputGroup';
-import InputPassword from '../../components/InputPassword';
+import InputUsername from '../../components/Input/InputUsername';
+import InputGroup from '../../components/Input/InputGroup';
+import InputPassword from '../../components/Input/InputPassword';
 import CsrfToken from '../../components/CsrfToken';
 import Button from '../../components/Button';
 import IndeterminateProgressBar from '../../components/IndeterminateProgressBar';
@@ -66,7 +66,7 @@ export default function LoginPage({ csrfToken }) {
           <InputUsername {...register('username')} error={errors.username} />
           <InputPassword {...register('password')} error={errors.password} />
         </InputGroup>
-        <div className="flex justify-between">
+        <div className="mt-10 flex justify-between">
           <QueryErrorMessage className="pt-2" />
           <Button className={'p-2'} type="submit">
             Iniciar Sesión

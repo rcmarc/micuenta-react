@@ -6,24 +6,30 @@ import InputLeftElement from './InputLeftElement';
 import Input from './Input';
 import InputRightElement from './InputRightElement';
 import InputIcon from './InputIcon';
+import InputLabel from './InputLabel';
+import InputErrorMessage from './InputErrorMessage';
 
 function InputPassword(props, ref) {
   const [show, setShow] = useState(false);
   const Icon = show ? MdVisibilityOff : MdVisibility;
+  const inputId = 'password';
+  const inputPlaceholder = 'Contraseña';
   return (
     <InputContainer>
       <InputLeftElement>
         <InputIcon icon={MdLock} />
       </InputLeftElement>
       <Input
-        {...props}
-        ref={ref}
+        id={inputId}
         type={show ? 'text' : 'password'}
-        placeholder={props.placeholder || 'Contraseña'}
-        className={`!px-10 ${
-          show ? 'tracking-normal' : 'tracking-widest'
-        } placeholder:tracking-normal`}
+        placeholder={' '}
+        hasLeftIcon={true}
+        ref={ref}
+        {...props}
       />
+      <InputLabel forId={inputId} hasLeftIcon={true} error={props.error}>
+        {inputPlaceholder}
+      </InputLabel>
       <InputRightElement>
         <InputIcon
           icon={Icon}
@@ -31,6 +37,7 @@ function InputPassword(props, ref) {
           className="cursor-pointer"
         />
       </InputRightElement>
+      <InputErrorMessage error={props.error} />
     </InputContainer>
   );
 }

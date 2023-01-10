@@ -13,25 +13,23 @@ const FormContainer = ({ children }) => {
 
 function FormOnlyLayout({ children, helperText }) {
   return (
-    <>
-      <FullScreenGradient>
-        <HCenter className="xs:pt-20">
-          <FormContainer>
-            <HCenter>
-              <Logo />
-            </HCenter>
-            <HCenter>
-              <p className="pr-2 pt-0.5 text-xl text-slate-500">MiCuenta</p>
-              <LogoText />
-            </HCenter>
-            <HCenter className="mt-3">
-              <p className="text-sm">{helperText}</p>
-            </HCenter>
-            <HCenter className="mt-10">{children}</HCenter>
-          </FormContainer>
-        </HCenter>
-      </FullScreenGradient>
-    </>
+    <FullScreenGradient>
+      <HCenter className="xs:pt-20">
+        <FormContainer>
+          <HCenter>
+            <Logo />
+          </HCenter>
+          <HCenter>
+            <p className="pr-2 pt-0.5 text-xl text-slate-500">MiCuenta</p>
+            <LogoText />
+          </HCenter>
+          <HCenter className="mt-3">
+            <p className="text-sm">{helperText}</p>
+          </HCenter>
+          <HCenter className="mt-10">{children}</HCenter>
+        </FormContainer>
+      </HCenter>
+    </FullScreenGradient>
   );
 }
 
