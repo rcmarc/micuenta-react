@@ -1,32 +1,18 @@
-import clsx from 'clsx';
 import React from 'react';
 
-function InputSelect({ placeholder, error, children, ...props }, ref) {
-  return (
-    <select
-      className={clsx(
-        'block w-full rounded-lg border-2  bg-slate-200 p-3 font-medium text-slate-600 outline-none transition-[border-color_background-color] hover:bg-slate-300',
-        {
-          'border-pink-500': error,
-          'border-slate-200 hover:border-sky-300': !error,
-        }
-      )}
-      defaultValue={placeholder}
-      ref={ref}
-      {...props}
-    >
-      <InputSelectPlaceholder placeholder={placeholder} />
+import InputContainer from './InputContainer';
+import InputErrorMessage from './InputErrorMessage';
+import StyledSelect from './StyledSelect';
+
+const InputSelect = React.forwardRef(({ error, children, ...props }, ref) => (
+  <InputContainer>
+    <StyledSelect error={error} ref={ref} {...props}>
       {children}
-    </select>
-  );
-}
+    </StyledSelect>
+    <InputErrorMessage error={error} />
+  </InputContainer>
+));
 
-function InputSelectPlaceholder({ placeholder }) {
-  return (
-    <option value={placeholder} disabled>
-      {placeholder}
-    </option>
-  );
-}
+InputSelect.displayName = 'InputSelect';
 
-export default React.forwardRef(InputSelect);
+export default InputSelect;

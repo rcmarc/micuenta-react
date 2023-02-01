@@ -1,6 +1,7 @@
+import clsx from 'clsx';
 import { useSession } from 'next-auth/react';
 
-export function Avatar({ className, size }) {
+function Avatar({ className, size }) {
   const session = useSession();
   let initials;
 
@@ -16,9 +17,19 @@ export function Avatar({ className, size }) {
 
   if (initials) {
     return (
-      <AvatarContainer size={size} className={className}>
-        <AvatarInitials size={size}>{initials}</AvatarInitials>
-      </AvatarContainer>
+      <div className={sizes[size || 'md'].pdiv}>
+        <div
+          className={clsx(
+            'flex items-center justify-center rounded-full bg-teal-500 font-semibold tracking-widest',
+            sizes[size || 'md'].hw,
+            className
+          )}
+        >
+          <p className={clsx('text-white', sizes[size || 'md'].text)}>
+            {initials}
+          </p>
+        </div>
+      </div>
     );
   }
 }
@@ -41,20 +52,4 @@ const sizes = {
   },
 };
 
-function AvatarContainer({ children, className, size }) {
-  return (
-    <div className={sizes[size || 'md'].pdiv}>
-      <div
-        className={`${
-          sizes[size || 'md'].hw + ' ' + className
-        } flex items-center justify-center rounded-full bg-teal-500 font-semibold tracking-widest`}
-      >
-        {children}
-      </div>
-    </div>
-  );
-}
-
-function AvatarInitials({ children, size }) {
-  return <p className={`${sizes[size || 'md'].text} text-white`}>{children}</p>;
-}
+export default Avatar;

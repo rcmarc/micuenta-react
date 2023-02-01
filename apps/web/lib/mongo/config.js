@@ -1,30 +1,9 @@
 import { database, isCollectionEmpty } from './mongo';
 
 const collection = database.collection('config');
-let config = {};
 
-async function get(projection) {
-  // check the config cache is empty
-  // if it is then get the data from mongo and cache
-  if (Object.keys(config).length === 0) {
-    config = await collection.findOne({});
-  }
-
-  // if no projection fields are passed then simply return all fields
-  if (!projection || Object.keys(projection).length === 0) {
-    return this.config;
-  }
-
-  // Then return the fields with a mongo similar projection functionality
-  let fieldsProjected = getPositiveProjection(projection);
-
-  if (fieldsProjected.length > 0) {
-    return getConfigOf(fieldsProjected);
-  }
-
-  fieldsProjected = getNonPositiveProjection(projection);
-
-  return getInverseConfigOf(fieldsProjected);
+function get(projection) {
+  return collection.findOne({}, { projection: { ...projection, _id: 0 } });
 }
 
 export function setUpConfig() {
@@ -35,32 +14,6 @@ export function setUpConfig() {
       });
     }
   });
-}
-
-function getPositiveProjection(projection) {
-  return getProjection(projection, (value) => value > 0);
-}
-
-function getNonPositiveProjection(projection) {
-  return getProjection(projection, (value) => value <= 0);
-}
-
-function getProjection(projection, condition) {
-  return Object.entries(projection)
-    .filter(([, value]) => condition(value))
-    .map(([key]) => key);
-}
-
-function getConfigOf(fields) {
-  return Object.fromEntries(
-    Object.entries(config).filter(([key]) => fields.includes(key))
-  );
-}
-
-function getInverseConfigOf(fields) {
-  return Object.fromEntries(
-    Object.entries(config).filter(([key]) => !fields.includes(key))
-  );
 }
 
 const instance = { get };

@@ -43,7 +43,7 @@ function TopBar() {
             <p className="px-2 text-lg italic text-slate-500">MiCuenta</p>
           </div>
           <div>
-            <LogoText size={'2xl'} />
+            <LogoText />
           </div>
         </div>
       </div>

@@ -1,10 +1,6 @@
-function LogoText({ size }) {
+function LogoText() {
   return (
-    <p
-      className={`micuenta-gradient bg-clip-text text-${
-        size || '2xl'
-      } font-medium text-transparent`}
-    >
+    <p className="micuenta-gradient bg-clip-text text-2xl font-medium text-transparent">
       UCF
     </p>
   );

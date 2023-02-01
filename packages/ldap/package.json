@@ -11,7 +11,7 @@
     "ldapjs": "^2.3.3"
   },
   "devDependencies": {
-    "eslint-config-prettier": "^8.5.0",
+    "eslint-config-prettier": "^8.6.0",
     "eslint-config-turbo": "^0.0.7",
     "eslint-plugin-prettier": "^4.2.1"
   }

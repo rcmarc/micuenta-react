@@ -1,8 +1,9 @@
 import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 
-import mongo from '../../../lib/mongo';
 import { ldap, toUser } from '@ucfgos/ldap';
+
+import mongo from '../../../lib/mongo';
 
 export const authOptions = {
   providers: [
@@ -33,9 +34,9 @@ export const authOptions = {
   ],
   pages: {
     signIn: '/auth/login',
+    signOut: '/auth/login',
     error: '/500',
   },
-  secret: process.env.SECRET_KEY,
 };
 
 export default NextAuth(authOptions);

@@ -41,7 +41,7 @@ function ErrorPageComponent({ code }) {
       </HCenter>
       <HCenter className="mt-10">
         <Link href="/">
-          <Button className="p-2">Volver al Inicio</Button>
+          <Button>Volver al Inicio</Button>
         </Link>
       </HCenter>
     </>

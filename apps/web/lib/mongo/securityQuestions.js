@@ -6,6 +6,10 @@ function getAll() {
   return collection.find().toArray();
 }
 
+function findOne(filter, projection) {
+  return collection.findOne(filter, { projection });
+}
+
 const SECURITY_QUESTIONS = [
   'Cuál es su segundo apellido?',
   'Cuál es su número de teléfono?',
@@ -23,6 +27,6 @@ export function setUpQuestions() {
   });
 }
 
-const instance = { getAll };
+const instance = { getAll, findOne };
 
 export default instance;

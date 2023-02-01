@@ -1,38 +1,59 @@
 import { unstable_getServerSession } from 'next-auth';
+
 import mongo from '../../../lib/mongo';
 import { authOptions } from '../auth/[...nextauth]';
+import {
+  post,
+  protectCsrf,
+  sendBadRequest,
+  sendInternalServerError,
+} from '../../../lib/http';
 
-export default async function handler(req, res) {
+async function handler(req, res) {
+  // --- Save the security questions for the authenticated user ---
+
+  const qArray = Object.entries(req.body)
+    // Keep only the questions and answers from the request body
+    .filter(([key]) => key.startsWith('question') || key.startsWith('answer'))
+
+    // Map entries to --> [{questionId: <n>}, {answer: <text>}]
+    .map(([key, value]) => {
+      if (key.startsWith('question')) return { questionId: value };
+      return { answer: value };
+    })
+
+    // Finally reduce to [{questionId: <n>, answer: <text>}]
+    .reduce((array, current) => {
+      if (Object.prototype.hasOwnProperty.call(current, 'questionId')) {
+        return array.concat(current);
+      }
+
+      Object.assign(array[array.length - 1], current);
+      return array;
+    }, []);
+
+  // Get the amount of questions required
   const { securityQuestionsRequired } = await mongo.config.get({
     securityQuestionsRequired: 1,
   });
 
-  const obj = Object.entries(req.body)
-    .filter(([key]) => key.startsWith('question') || key.startsWith('answer'))
-    .reduce((p, c) => reduceQuestions(p, c), Array(securityQuestionsRequired));
-
-  if (obj.length !== securityQuestionsRequired) {
-    return res.status(400).send();
+  // Send a Bad Request response if there are duplicated questions
+  // and if the length is different from the amount of questions required
+  if (
+    new Set(qArray.map((q) => q.questionId)).size !== qArray.length ||
+    qArray.length !== securityQuestionsRequired
+  ) {
+    return sendBadRequest(res);
   }
 
-  const { user } = await unstable_getServerSession(req, res, authOptions);
-
+  // Save the questions for the authenticated user
   try {
-    await mongo.users.setSecurityQuestions({ email: user.email }, obj);
-    return res.status(200).send();
+    const { user } = await unstable_getServerSession(req, res, authOptions);
+    await mongo.users.setSecurityQuestions({ email: user.email }, qArray);
+    return res.send({ message: 'Las respuestas se guardaron exitósamente' });
   } catch (err) {
-    res.status(500).send();
+    return sendInternalServerError(res);
   }
 }
 
-function reduceQuestions(p, c) {
-  const newObj = {};
-  const questionIndex = parseInt(c[0][c[0].length - 1]);
-  if (c[0].startsWith('question')) {
-    newObj['questionId'] = c[1];
-  } else {
-    newObj['answer'] = c[1];
-  }
-  p[questionIndex] = Object.assign({}, p[questionIndex], newObj);
-  return p;
-}
+export default post(protectCsrf(handler));

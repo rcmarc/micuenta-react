@@ -1,60 +1,22 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { FaAngleRight } from 'react-icons/fa';
+
 import HelpList from '../../components/HelpList';
 import HelpListItem from '../../components/HelpListItem';
 import Responsive from '../../components/Responsive';
-import { useDateLocale, useLdapToDate, useUserData } from '../../hooks';
-
 import MainLayout from '../../layouts/MainLayout';
+import { useDateLocale, useLdapToDate } from '../../hooks/date';
+import { useUserData } from '../../hooks/user';
 import { getUser } from '../../lib/user';
 
 function Security() {
   return (
-    <ActionList>
+    <ul className="[&>li]:mb-5">
       <ChangePasswordAction />
       <SecurityQuestionsAction />
-    </ActionList>
+    </ul>
   );
-}
-
-function ActionContainer({ children }) {
-  return (
-    <div className="flex cursor-pointer justify-between rounded-lg bg-slate-200 p-6 transition-[background-color_box-shadow] hover:bg-slate-300 hover:shadow-md active:bg-slate-200">
-      {children}
-    </div>
-  );
-}
-
-function ActionText({ children }) {
-  return <p className="font-semibold text-slate-600">{children}</p>;
-}
-
-function ActionCenterText({ children }) {
-  return (
-    <p className="ml-12 mr-auto font-semibold tracking-widest text-slate-500">
-      {children}
-    </p>
-  );
-}
-
-function Action({ title, centerText, href, children }) {
-  return (
-    <li>
-      <Link href={href}>
-        <ActionContainer>
-          <ActionText>{title}</ActionText>
-          {centerText && <ActionCenterText>{centerText}</ActionCenterText>}
-          <FaAngleRight size={20} className="mt-1 text-slate-600" />
-        </ActionContainer>
-      </Link>
-      {children}
-    </li>
-  );
-}
-
-function ActionList({ children }) {
-  return <ul className="[&>li]:mb-5">{children}</ul>;
 }
 
 function ChangePasswordAction() {
@@ -92,6 +54,25 @@ function SecurityQuestionsAction() {
       href={router.pathname + '/questions'}
       title="Preguntas de Seguridad"
     />
+  );
+}
+
+function Action({ title, centerText, href, children }) {
+  return (
+    <li>
+      <Link href={href}>
+        <div className="flex cursor-pointer justify-between rounded-lg bg-slate-200 p-6 transition-[background-color_box-shadow] hover:bg-slate-300 hover:shadow-md active:bg-slate-200">
+          <p className="font-semibold text-slate-600">{title}</p>
+          {centerText && (
+            <p className="ml-12 mr-auto font-semibold tracking-widest text-slate-500">
+              {centerText}
+            </p>
+          )}
+          <FaAngleRight size={20} className="mt-1 text-slate-600" />
+        </div>
+      </Link>
+      {children}
+    </li>
   );
 }
 
