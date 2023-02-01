@@ -3,6 +3,7 @@ version: '3.8'
 services:
   web:
     build: .
+    image: ucfgos/micuenta-web:1.0.0
     environment:
       - LDAP_HOST=${LDAP_HOST}
       - LDAP_BIND_DN=${LDAP_BIND_DN}
