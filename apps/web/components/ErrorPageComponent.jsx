@@ -17,7 +17,7 @@ const ERRORS = [
   },
 ];
 
-export default function Error({ code }) {
+function ErrorPageComponent({ code }) {
   const error = ERRORS.find((err) => err.code === code);
   return (
     <>
@@ -41,9 +41,11 @@ export default function Error({ code }) {
       </HCenter>
       <HCenter className="mt-10">
         <Link href="/">
-          <Button className="p-2">Volver al Inicio</Button>
+          <Button>Volver al Inicio</Button>
         </Link>
       </HCenter>
     </>
   );
 }
+
+export default ErrorPageComponent;

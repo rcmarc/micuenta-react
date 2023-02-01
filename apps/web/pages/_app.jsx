@@ -1,6 +1,9 @@
 import { SessionProvider } from 'next-auth/react';
 
-import { ErrorPopupMessageProvider, UserDataProvider } from '../hooks';
+import { LoadingProvider } from '../hooks/loading';
+import { PopupMessageProvider } from '../hooks/popup';
+import { UserDataProvider } from '../hooks/user';
+
 import '../styles/globals.css';
 
 function MyApp({ Component, pageProps: { session, user, ...pageProps } }) {
@@ -8,9 +11,11 @@ function MyApp({ Component, pageProps: { session, user, ...pageProps } }) {
   return (
     <SessionProvider session={session}>
       <UserDataProvider user={user}>
-        <ErrorPopupMessageProvider>
-          {getLayout(<Component {...pageProps} />)}
-        </ErrorPopupMessageProvider>
+        <LoadingProvider>
+          <PopupMessageProvider>
+            {getLayout(<Component {...pageProps} />)}
+          </PopupMessageProvider>
+        </LoadingProvider>
       </UserDataProvider>
     </SessionProvider>
   );

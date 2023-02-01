@@ -20,6 +20,9 @@ const toUser = (entry) => {
 };
 
 const connect = () => {
+  if (!options.url) {
+    return {};
+  }
   return createClient({
     url: options.url,
     reconnect: true,
@@ -47,7 +50,7 @@ class LdapBadCredentialsError extends Error {
   constructor() {
     super();
     this.name = 'LdapBadCredentialsError';
-    this.message = 'Credenciales incorrectas';
+    this.error = 'Credenciales incorrectas';
   }
 }
 
@@ -55,7 +58,7 @@ class LdapPasswordCriteriaError extends Error {
   constructor() {
     super();
     this.name = 'LdapPasswordCriteriaError';
-    this.message = 'No ha sido posible cambiar la contraseña';
+    this.error = 'No ha sido posible cambiar la contraseña';
   }
 }
 
@@ -64,9 +67,33 @@ class Ldap {
     this.client = connect();
   }
 
+  async resetPwd(filter, newPwd) {
+    const entry = await this.fetchEntry(filter);
+    return await new Promise((resolve, reject) => {
+      // eslint-disable-next-line no-unused-vars
+      rootBind(this.client, (err, res) => {
+        if (err) return reject(err);
+        this.client.modify(
+          entry.object.dn,
+          new Change({
+            operation: 'replace',
+            modification: {
+              unicodePwd: encodePwd(newPwd),
+            },
+          }),
+          (err) => {
+            if (err) return reject(new LdapPasswordCriteriaError());
+            return resolve();
+          }
+        );
+      });
+    });
+  }
+
   async changePwd(filter, oldPwd, newPwd) {
     const entry = await this.authenticate(filter, oldPwd);
     if (!entry) throw new LdapBadCredentialsError();
+
     return await new Promise((resolve, reject) => {
       // eslint-disable-next-line no-unused-vars
       rootBind(this.client, (err, res) => {

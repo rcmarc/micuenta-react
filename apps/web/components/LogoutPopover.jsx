@@ -1,6 +1,6 @@
 import { signOut, useSession } from 'next-auth/react';
 
-import Avatar from './Avatar';
+import Avatar from './avatar/Avatar';
 import Button from './Button';
 
 function LogoutPopover() {
@@ -12,23 +12,19 @@ function LogoutPopover() {
   };
 
   return (
-    <>
-      <div className="flex flex-col items-center rounded-lg border-[1px] border-slate-200 bg-slate-50 p-4 shadow-md">
-        {user ? (
-          <>
-            <Avatar />
-            <p className="mt-1 w-max text-sm font-medium text-slate-400">
-              {user.email}
-            </p>
-            <Button onClick={onClick} className={'mt-4 px-2 py-1'}>
-              Cerrar Sessión
-            </Button>
-          </>
-        ) : (
-          <p>Loading...</p>
-        )}
-      </div>
-    </>
+    <div className="flex flex-col items-center rounded-lg border-[1px] border-slate-200 bg-slate-50 p-4 shadow-md">
+      {user ? (
+        <>
+          <Avatar />
+          <p className="mt-1 mb-5 w-max text-sm font-medium text-slate-400">
+            {user.email}
+          </p>
+          <Button onClick={onClick}>Cerrar Sessión</Button>
+        </>
+      ) : (
+        <p>Loading...</p>
+      )}
+    </div>
   );
 }
 

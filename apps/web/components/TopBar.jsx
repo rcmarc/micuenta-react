@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 
-import Avatar from './Avatar';
+import Avatar from './avatar/Avatar';
 import Logo from './Logo';
 import LogoText from './LogoText';
 import LogoutPopover from './LogoutPopover';
@@ -43,7 +43,7 @@ function TopBar() {
             <p className="px-2 text-lg italic text-slate-500">MiCuenta</p>
           </div>
           <div>
-            <LogoText size={'2xl'} />
+            <LogoText />
           </div>
         </div>
       </div>

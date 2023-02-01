@@ -1,48 +1,25 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { FaAngleRight } from 'react-icons/fa';
+
 import HelpList from '../../components/HelpList';
 import HelpListItem from '../../components/HelpListItem';
 import Responsive from '../../components/Responsive';
-import { useDateLocale, useLdapToDate, useUserData } from '../../hooks';
-
 import MainLayout from '../../layouts/MainLayout';
+import { useDateLocale, useLdapToDate } from '../../hooks/date';
+import { useUserData } from '../../hooks/user';
 import { getUser } from '../../lib/user';
 
-const ActionContainer = ({ children }) => (
-  <div className="flex cursor-pointer justify-between rounded-lg bg-slate-200 p-6 transition-[background-color_box-shadow] hover:bg-slate-300 hover:shadow-md active:bg-slate-200">
-    {children}
-  </div>
-);
+function Security() {
+  return (
+    <ul className="[&>li]:mb-5">
+      <ChangePasswordAction />
+      <SecurityQuestionsAction />
+    </ul>
+  );
+}
 
-const ActionText = ({ children }) => (
-  <p className="font-semibold text-slate-600">{children}</p>
-);
-
-const ActionCenterText = ({ children }) => (
-  <p className="ml-12 mr-auto font-semibold tracking-widest text-slate-500">
-    {children}
-  </p>
-);
-
-const Action = ({ title, centerText, href, children }) => (
-  <li>
-    <Link href={href}>
-      <ActionContainer>
-        <ActionText>{title}</ActionText>
-        {centerText && <ActionCenterText>{centerText}</ActionCenterText>}
-        <FaAngleRight size={20} className="mt-1 text-slate-600" />
-      </ActionContainer>
-    </Link>
-    {children}
-  </li>
-);
-
-const ActionList = ({ children }) => (
-  <ul className="[&>li]:mb-5">{children}</ul>
-);
-
-const ChangePasswordAction = () => {
+function ChangePasswordAction() {
   const router = useRouter();
   const user = useUserData();
   const dateLocale = useDateLocale();
@@ -68,9 +45,9 @@ const ChangePasswordAction = () => {
       </HelpList>
     </Action>
   );
-};
+}
 
-const SecurityQuestionsAction = () => {
+function SecurityQuestionsAction() {
   const router = useRouter();
   return (
     <Action
@@ -78,14 +55,24 @@ const SecurityQuestionsAction = () => {
       title="Preguntas de Seguridad"
     />
   );
-};
+}
 
-function Security() {
+function Action({ title, centerText, href, children }) {
   return (
-    <ActionList>
-      <ChangePasswordAction />
-      <SecurityQuestionsAction />
-    </ActionList>
+    <li>
+      <Link href={href}>
+        <div className="flex cursor-pointer justify-between rounded-lg bg-slate-200 p-6 transition-[background-color_box-shadow] hover:bg-slate-300 hover:shadow-md active:bg-slate-200">
+          <p className="font-semibold text-slate-600">{title}</p>
+          {centerText && (
+            <p className="ml-12 mr-auto font-semibold tracking-widest text-slate-500">
+              {centerText}
+            </p>
+          )}
+          <FaAngleRight size={20} className="mt-1 text-slate-600" />
+        </div>
+      </Link>
+      {children}
+    </li>
   );
 }
 

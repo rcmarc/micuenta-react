@@ -20,7 +20,12 @@ function setSecurityQuestions(filter, questions) {
   });
 }
 
+function findOne(filter, projection) {
+  return collection.findOne(filter, { projection });
+}
+
 const instance = {
+  findOne,
   insertOne,
   insertOneIfNotExists,
   setSecurityQuestions,

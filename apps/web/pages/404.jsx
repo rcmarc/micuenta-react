@@ -1,7 +1,7 @@
-import Error from '../components/Error';
+import ErrorPageComponent from '../components/ErrorPageComponent';
 
 function NotFound() {
-  return <Error code={404} />;
+  return <ErrorPageComponent code={404} />;
 }
 
 export default NotFound;

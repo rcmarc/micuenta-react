@@ -6,10 +6,8 @@ const sizes = {
   lg: '80px',
 };
 
-function AvatarIcon({ size }) {
+export function AvatarIcon({ size }) {
   return (
     <MdAccountCircle size={sizes[size || 'md']} className="text-slate-500" />
   );
 }
-
-export default AvatarIcon;

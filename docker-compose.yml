@@ -17,15 +17,18 @@ services:
       - MONGODB_ROOT_USER=${MONGODB_ROOT_USER:-root}
       - MONGODB_ROOT_PASSWORD=${MONGODB_ROOT_PASSWORD}
       - MONGODB_HOST=${MONGODB_HOST:-database}
+      - NEXTAUTH_URL=${SITE_URL}
+      - NEXTAUTH_SECRET=${SECRET_KEY}
+    depends_on:
+      - database
 
   database:
-    image: bitnami/mongodb:6.0.3
+    image: mongo:6.0.3
     volumes:
-     - data:/bitname/mongodb
+      - data:/data/db
     environment:
-     - MONGODB_ROOT_USER=${MONGODB_ROOT_USER:-root}
-     - MONGODB_ROOT_PASSWORD=${MONGODB_ROOT_PASSWORD}
-     - MONGODB_EXTRA_FLAGS=${MONGODB_EXTRA_FLAGS:---wiredTigerCacheSizeGB=2}
+      - MONGO_INITDB_ROOT_USERNAME=${MONGODB_ROOT_USER:-root}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGODB_ROOT_PASSWORD}
 
 volumes:
   data:
