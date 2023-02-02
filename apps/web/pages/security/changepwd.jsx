@@ -1,6 +1,6 @@
 import Joi from 'joi';
 import { joiResolver } from '@hookform/resolvers/joi';
-import { getCsrfToken, signOut } from 'next-auth/react';
+import { signOut } from 'next-auth/react';
 
 import Button from '../../components/Button';
 import CsrfToken from '../../components/CsrfToken';
@@ -9,6 +9,7 @@ import InputPassword from '../../components/Input/InputPassword';
 import MainLayout from '../../layouts/MainLayout';
 import Responsive from '../../components/Responsive';
 import { useFetch } from '../../hooks/fetch';
+import csrf from '../../lib/csrf';
 
 function ChangePassword({ csrfToken }) {
   const fetch = useFetch(true);
@@ -90,8 +91,10 @@ ChangePassword.getLayout = (page) => (
 
 export default ChangePassword;
 
-export const getServerSideProps = async (context) => ({
-  props: {
-    csrfToken: await getCsrfToken(context),
-  },
-});
+export async function getServerSideProps() {
+  return {
+    props: {
+      csrfToken: csrf.create(process.env.SECRET_KEY),
+    },
+  };
+}

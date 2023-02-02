@@ -14,6 +14,8 @@ export function useSignIn(provider) {
     setLoading(true);
     hidePopup();
 
+    console.log('hi');
+
     const res = await Promise.race([
       timeout(),
       signIn(provider || 'credentials', {
@@ -22,6 +24,7 @@ export function useSignIn(provider) {
       }),
     ]);
 
+    console.log(res);
     if (res.error === 'CredentialsSignin') {
       setPopupMessage({ text: 'Credenciales Incorrectas', type: ERROR_POPUP });
     }

@@ -1,6 +1,5 @@
 import Joi from 'joi';
 import { joiResolver } from '@hookform/resolvers/joi';
-import { getCsrfToken } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
@@ -11,6 +10,7 @@ import InputPassword from '../../../../components/Input/InputPassword';
 import AppLink from '../../../../components/Link';
 import FormOnlyLayout from '../../../../layouts/FormOnlyLayout';
 import mongo from '../../../../lib/mongo';
+import csrf from '../../../../lib/csrf';
 import { useFetch } from '../../../../hooks/fetch';
 import { usePopupMessage } from '../../../../hooks/popup';
 
@@ -84,7 +84,7 @@ PwdForm.getLayout = function (page) {
   );
 };
 
-export async function getServerSideProps({ req, query }) {
+export async function getServerSideProps({ query }) {
   const savedUrl = await mongo.changePwdUrls.findOne({ url: query.url });
   if (!savedUrl) {
     return {
@@ -96,7 +96,7 @@ export async function getServerSideProps({ req, query }) {
   }
   return {
     props: {
-      csrfToken: await getCsrfToken({ req }),
+      csrfToken: csrf.create(process.env.SECRET_KEY),
     },
   };
 }
