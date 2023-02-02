@@ -23,9 +23,6 @@ services:
       - database
     ports:
       - 3000:3000
-    networks:
-      - micuenta-net
-      - default
 
   database:
     image: mongo:6.0.3
@@ -34,6 +31,8 @@ services:
     environment:
       - MONGO_INITDB_ROOT_USERNAME=${MONGODB_ROOT_USER:-root}
       - MONGO_INITDB_ROOT_PASSWORD=${MONGODB_ROOT_PASSWORD}
+    ports:
+      - 27017:27017
 
 volumes:
   data:
