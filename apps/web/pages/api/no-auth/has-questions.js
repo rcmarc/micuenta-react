@@ -11,7 +11,11 @@ async function handler(req, res) {
     { securityQuestions: 1 }
   );
 
-  if (mongoUser.securityQuestions && mongoUser.securityQuestions.length > 0) {
+  if (
+    mongoUser &&
+    mongoUser.securityQuestions &&
+    mongoUser.securityQuestions.length > 0
+  ) {
     return res.status(200).send({ hasQuestions: true });
   }
 
