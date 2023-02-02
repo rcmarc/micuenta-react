@@ -1,11 +1,11 @@
 import React from 'react';
-import { getCsrfToken } from 'next-auth/react';
 
 import Card from '../../components/Card';
 import SecurityQuestionsForm from '../../components/SecurityQuestionsForm';
 import MainLayout from '../../layouts/MainLayout';
 import mongo from '../../lib/mongo';
 import { useFetch } from '../../hooks/fetch';
+import csrf from '../../lib/csrf';
 
 function SecurityQuestions({
   csrfToken,
@@ -42,12 +42,12 @@ SecurityQuestions.getLayout = (page) => <MainLayout>{page}</MainLayout>;
 
 export default SecurityQuestions;
 
-export async function getServerSideProps(context) {
+export async function getServerSideProps() {
   const config = await mongo.config.get({ securityQuestionsRequired: 1 });
   return {
     props: {
       securityQuestions: await mongo.securityQuestions.getAll(),
-      csrfToken: await getCsrfToken(context),
+      csrfToken: csrf.create(process.env.SECRET_KEY),
       ...config,
     },
   };
