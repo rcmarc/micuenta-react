@@ -1,4 +1,3 @@
-import { getCsrfToken } from 'next-auth/react';
 import { useRouter } from 'next/router';
 
 import AppLink from '../../../components/Link';
@@ -6,6 +5,7 @@ import SecurityQuestionsForm from '../../../components/SecurityQuestionsForm';
 import FormOnlyLayout from '../../../layouts/FormOnlyLayout';
 import { useFetch } from '../../../hooks/fetch';
 import { getUserSecurityQuestions } from '../../../lib/mongo/utils';
+import csrf from '../../../lib/csrf';
 
 function Change({ csrfToken, securityQuestions }) {
   const fetch = useFetch(true);
@@ -38,7 +38,10 @@ export async function getServerSideProps(ctx) {
     username: ctx.query.username,
   });
   return {
-    props: { securityQuestions, csrfToken: await getCsrfToken(ctx) },
+    props: {
+      securityQuestions,
+      csrfToken: csrf.create(process.env.SECRET_KEY),
+    },
   };
 }
 

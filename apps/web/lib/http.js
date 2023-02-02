@@ -1,4 +1,4 @@
-import { getCsrfToken } from 'next-auth/react';
+import csrf from './csrf';
 
 export function sendInternalServerError(res) {
   res.status(500).send({ error: 'Error interno en el servidor' });
@@ -22,8 +22,10 @@ export function sendMethodNotAllowed(res) {
 
 export function protectCsrf(next) {
   return async function (req, res) {
-    const csrfToken = await getCsrfToken({ req });
-    if (!csrfToken || !req.body.csrfToken || req.body.csrfToken !== csrfToken) {
+    if (
+      !req.body.csrfToken ||
+      !csrf.verify(process.env.SECRET_KEY, req.body.csrfToken)
+    ) {
       return sendForbidden(res);
     }
     return next(req, res);

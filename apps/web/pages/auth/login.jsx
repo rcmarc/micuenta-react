@@ -1,5 +1,4 @@
 import joi from 'joi';
-import { getCsrfToken } from 'next-auth/react';
 import { unstable_getServerSession } from 'next-auth';
 import { joiResolver } from '@hookform/resolvers/joi';
 
@@ -8,19 +7,17 @@ import FormOnlyLayout from '../../layouts/FormOnlyLayout';
 import Form from '../../components/Form';
 import InputUsername from '../../components/Input/InputUsername';
 import InputPassword from '../../components/Input/InputPassword';
-import CsrfToken from '../../components/CsrfToken';
 import Button from '../../components/Button';
 import { useSignIn } from '../../hooks/auth';
 import { authOptions } from '../api/auth/[...nextauth]';
 
-export default function LoginPage({ csrfToken }) {
+export default function LoginPage() {
   const signIn = useSignIn();
 
   return (
-    <Form onSubmit={signIn} defaultValues={{ csrfToken }} resolver={resolver}>
+    <Form onSubmit={signIn} resolver={resolver}>
       <InputUsername name="username" />
       <InputPassword name="password" />
-      <CsrfToken name="csrfToken" />
       <div className="flex items-center justify-between">
         <AppLink href="forgotpwd">Olvidó su contraseña?</AppLink>
         <Button type="submit">Iniciar Sesión</Button>
@@ -33,7 +30,6 @@ const required = joi.string().required();
 
 const resolver = joiResolver(
   joi.object({
-    csrfToken: required,
     username: required,
     password: required,
   }),
@@ -62,9 +58,7 @@ export async function getServerSideProps(context) {
   }
 
   return {
-    props: {
-      csrfToken: await getCsrfToken(context),
-    },
+    props: {},
   };
 }
 
