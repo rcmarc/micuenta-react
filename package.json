@@ -4,7 +4,7 @@
   "author": {
     "name": "Universidad de Cienfuegos"
   },
-  "version": "1.0.2",
+  "version": "1.0.3",
   "workspaces": [
     "apps/*",
     "packages/*"
