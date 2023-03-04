@@ -4,10 +4,10 @@ import AppLink from '../../../components/Link';
 import SecurityQuestionsForm from '../../../components/SecurityQuestionsForm';
 import FormOnlyLayout from '../../../layouts/FormOnlyLayout';
 import { useFetch } from '../../../hooks/fetch';
-import { getUserSecurityQuestions } from '../../../lib/mongo/utils';
 import csrf from '../../../lib/csrf';
+import mongo from '../../../lib/mongo';
 
-function Change({ csrfToken, securityQuestions }) {
+function Change({ csrfToken, securityQuestions, securityQuestionsRequired }) {
   const fetch = useFetch(true);
   const router = useRouter();
   async function onSubmit(data) {
@@ -26,20 +26,22 @@ function Change({ csrfToken, securityQuestions }) {
         onSubmit={onSubmit}
         csrfToken={csrfToken}
         securityQuestions={securityQuestions}
-        securityQuestionsRequired={securityQuestions.length}
+        securityQuestionsRequired={securityQuestionsRequired}
       />
       <AppLink href="/auth/login">Volver al inicio</AppLink>
     </div>
   );
 }
 
-export async function getServerSideProps(ctx) {
-  const securityQuestions = await getUserSecurityQuestions({
-    username: ctx.query.username,
+export async function getServerSideProps() {
+  const securityQuestions = await mongo.securityQuestions.getAll();
+  const { securityQuestionsRequired } = await mongo.config.get({
+    securityQuestionsRequired: 1,
   });
   return {
     props: {
       securityQuestions,
+      securityQuestionsRequired,
       csrfToken: csrf.create(process.env.SECRET_KEY),
     },
   };
