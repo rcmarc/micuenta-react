@@ -7,7 +7,7 @@ function Logo({ size }) {
       width={size || 64}
       height={size || 64}
       priority={true}
-      alt="UCF logo"
+      alt="UCf logo"
     />
   );
 }
