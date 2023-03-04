@@ -6,7 +6,7 @@ import { useForm } from 'react-hook-form';
 
 import Button from './Button';
 import CsrfToken from './CsrfToken';
-import Input from './Input';
+import InputPassword from './Input/InputPassword';
 import InputSelect from './Input/InputSelect';
 
 function SecurityQuestionsForm({
@@ -91,7 +91,7 @@ function SecurityQuestionsForm({
                 </option>
               ))}
             </InputSelect>
-            <Input
+            <InputPassword
               error={errors[`answer_${i}`]}
               placeholder="Respuesta"
               id={`answer_${i}`}
