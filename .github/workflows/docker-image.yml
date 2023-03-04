@@ -28,5 +28,5 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           push: true
-          tags: ucfgos/micuenta-web:latest, ucfgos/micuenta-web:1.0.4
+          tags: ucfgos/micuenta-web:latest, ucfgos/micuenta-web:1.0.5
   
